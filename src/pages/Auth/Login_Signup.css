@@ -1,0 +1,82 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.login-container form{
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.signup-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.signup-container form{
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    
+}
+
+h2 {
+    text-align: center;
+    font-family: "Trebuchet MS";
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Trebuchet MS";
+    
+}
+
+button {
+    padding: 10px;
+    background-color: #abde04;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Trebuchet MS";
+    font-size: large;
+}
+
+button:hover{
+    background-color: #6b8b00;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+span{
+    color: red;
+    font-weight: bold;
+}
+
+link{
+    font-family: "Trebuchet MS";
+}
