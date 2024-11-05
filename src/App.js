@@ -2,6 +2,14 @@ import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 
+import Transportation from './components/Questionaire/Transportation';
+import HomeEnergy from './components/Questionaire/HomeEnergy';
+import FoodAndDiet from './components/Questionaire/FoodAndDiet';
+import Shopping from './components/Questionaire/Shopping';
+import WasteManagement from './components/Questionaire/WasteManagement';
+import Lifestyle from './components/Questionaire/Lifestyle';
+import Questionaire from './components/Questionaire/Questionaire';
+
 function App() {
   return (
     <div className="App">
@@ -9,6 +17,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
+
+
+
+
+
+          
+          {/* Questionaire paths */}
+          <Route path="/questionaire" element={<Questionaire/>}/>
+
         </Routes>
       </Router>
 
