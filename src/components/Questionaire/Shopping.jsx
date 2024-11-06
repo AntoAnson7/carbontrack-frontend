@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
 import { Select, Button } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { message } from 'antd';
+import { useDispatch,useSelector } from 'react-redux';
 
 const Shopping = ({submit}) => {
+  const user = useSelector((state)=>state.user.user)
   const [clothingPurchase, setClothingPurchase] = useState('');
   const [generalPurchases, setGeneralPurchases] = useState('');
   const [recycling, setRecycling] = useState('');
 
-  const handleSubmit = () => {
-    submit({ clothingPurchase, generalPurchases, recycling });
-    console.log("Shopping Posted");
+  const handleSubmit = async() => {
+    const data = {
+      "clothing_purchase":clothingPurchase,
+      "general_purchases":generalPurchases,
+      "recycling":recycling,
+      "username":user.username
+    }
+
+    try{
+      const res = await axios.post('http://127.0.0.1:8000/api/shoppinggoods/',data)
+      console.log(res.data)
+      message.success('Shopping and Purchase details received!')
+      submit()
+    }catch(err){
+      if(err.response){
+        message.error(err.response.data.msg)
+      }
+      else{
+        message.error("Network Error!")
+      }
+    }
   };
 
   return (

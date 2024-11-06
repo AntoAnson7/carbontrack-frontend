@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
 import { Select, InputNumber, Button } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { message } from 'antd';
+import { useDispatch,useSelector } from 'react-redux';
 
 const FoodAndDiet = ({submit}) => {
+  const user = useSelector((state)=>state.user.user)
+
   const [dietType, setDietType] = useState('');
   const [mealFrequency, setMealFrequency] = useState(0);
   const [foodSource, setFoodSource] = useState('');
 
-  const handleSubmit = () => {
-    submit({ dietType, mealFrequency, foodSource });
-    console.log("FoodAndDiet Posted");
+  const handleSubmit = async() => {
+    const data = {
+      "diet_type":dietType,
+      "dairy_meat_meal_frequency":mealFrequency,
+      "food_source":foodSource,
+      "username":user.username
+    }
+
+    try{
+      const res = await axios.post('http://127.0.0.1:8000/api/fooddiet/',data)
+      console.log(res.data)
+      message.success('Food and Diet details received!')
+      submit()
+    }catch(err){
+      if(err.response){
+        message.error(err.response.data.msg)
+      }
+      else{
+        message.error("Network Error!")
+      }
+    }
   };
 
   return (
@@ -41,7 +64,7 @@ const FoodAndDiet = ({submit}) => {
           </div>
 
           <div className="food-source">
-          <label>What is the primary source of your food?</label>
+          <label>How often does your food come from organic sources?</label>
             <Select placeholder="Select Food Source" onChange={setFoodSource} style={{ width: '100%' }}>
               <Select.Option value="ALWAYS">Always</Select.Option>
               <Select.Option value="OFTEN">Often</Select.Option>

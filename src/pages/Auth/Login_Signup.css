@@ -1,82 +1,60 @@
-.login-container {
+.signup-container,.login-container{
+    height: 100vh;
+    width: 100vw;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-top: 30px;
 }
 
-.login-container form{
-    width: 300px;
+.auth-left,.auth-right{
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container form h1,.signup-container form h1{
+    color: #abde04;
+}
+
+.login-container form,.signup-container form{
+    width: 500px;
+    height: 400px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
-
-.signup-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
-}
-
-.signup-container form{
-    width: 300px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    
-}
-
-h2 {
-    text-align: center;
-    font-family: "Trebuchet MS";
-}
-
-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 
-input {
+.login-container form input,.signup-container form input {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-family: "Trebuchet MS";
-    
 }
 
-button {
+.login-container form button ,.signup-container form button{
     padding: 10px;
     background-color: #abde04;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-family: "Trebuchet MS";
     font-size: large;
+    width: 40%;
+    height: 50px;
 }
 
-button:hover{
+.login-container form button:hover,.signup-container form button:hover{
     background-color: #6b8b00;
 }
 
-.error {
-    color: red;
-    text-align: center;
-}
 
-span{
-    color: red;
-    font-weight: bold;
-}
 
-link{
-    font-family: "Trebuchet MS";
-}

@@ -1,16 +1,40 @@
 import React, { useState } from 'react';
 import { Select, InputNumber, Button } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios'
+import {message} from 'antd'
+import { useDispatch,useSelector } from 'react-redux';
 
 const HomeEnergy = ({submit}) => {
+  const user = useSelector((state)=>state.user.user)
+
   const [livingSituation, setLivingSituation] = useState('');
   const [householdSize, setHouseholdSize] = useState(1);
   const [energySource, setEnergySource] = useState('');
   const [monthlyConsumption, setMonthlyConsumption] = useState(0);
 
-  const handleSubmit = () => {
-    console.log("Home Energy Posted");
-    submit({ livingSituation, householdSize, energySource, monthlyConsumption });
+  const handleSubmit = async() => {
+    const data={
+      "living_situation":livingSituation,
+      "household_size":householdSize,
+      "energy_source":energySource,
+      "monthly_consumption":monthlyConsumption,
+      "username":user.username
+    }
+
+    try{
+      const res = await axios.post('http://127.0.0.1:8000/api/energy/',data)
+      console.log(res.data)
+      message.success('Energy Usage details received!')
+      submit()
+    }catch(err){
+      if(err.response){
+        message.error(err.response.data.msg)
+      }
+      else{
+        message.error("Network Error!")
+      }
+    }
   };
 
   return (

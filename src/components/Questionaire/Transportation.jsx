@@ -1,20 +1,43 @@
 import React, { useState } from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { Select, InputNumber, Button } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { message } from 'antd';
 import './Styles/Transportation.css'
+import { useDispatch,useSelector } from 'react-redux';
 
 const { Option } = Select;
 
 const Transportation = ({submit}) => {
+  const user = useSelector((state)=>state.user.user)
+  
   const [dailyCommute, setDailyCommute] = useState('');
   const [fuelType, setFuelType] = useState('');
   const [commuteDistance, setCommuteDistance] = useState(0);
   const [airTravel, setAirTravel] = useState(0);
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     console.log("Transportation Posted");
-    submit({ dailyCommute, fuelType, commuteDistance, airTravel })
+    const data = { 
+      "daily_commute":dailyCommute, 
+      "fuel_type":fuelType, 
+      "commute_distance":commuteDistance,
+      "air_travel": airTravel,
+      "username":user.username
+    }
+    try{
+      const res = await axios.post('http://127.0.0.1:8000/api/transportation/',data)
+      console.log(res.data)
+      message.success('Transportation details received!')
+      submit()
+    }catch(err){
+      if(err.response){
+        message.error(err.response.data.msg)
+      }
+      else{
+        message.error("Network Error!")
+      }
+    }
   };
 
   return (

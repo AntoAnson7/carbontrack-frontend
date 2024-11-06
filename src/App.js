@@ -3,15 +3,36 @@ import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup';
 import Questionaire from './components/Questionaire/Questionaire';
+import Logout from './components/Logout/Logout';
+import Unauthorized from './components/Errors/Unauthorized';
+import Dashboard from './pages/Dashboard/Dashboard'
+import { useDispatch } from 'react-redux';
+import { fetchUser } from './Redux/userSlice';
+import { useEffect } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(fetchUser(token));
+    }
+  }, [dispatch]);
+
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
-          <Route path="/signup" element={<Signup/>}/>
+          <Route path="/register" element={<Signup/>}/>
+
+
+          <Route path="/dashboard" element={<Dashboard/>}/>
+
+          <Route path="/logout" element={<Logout/>}/>
+          <Route path="/unauthorized" element={<Unauthorized/>}/>
 
           {/* Questionaire paths */}
           <Route path="/questionaire" element={<Questionaire/>}/>

@@ -1,14 +1,36 @@
 import React, { useState } from 'react';
 import { Select, Button } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { message } from 'antd';
+import { useDispatch,useSelector } from 'react-redux';
 
 const Lifestyle = ({submit}) => {
+  const user = useSelector((state)=>state.user.user)
+
   const [energySaving, setEnergySaving] = useState('');
   const [waterUsage, setWaterUsage] = useState('');
 
-  const handleSubmit = () => {
-    submit({ energySaving, waterUsage });
-    console.log("Lifestyle Posted");
+  const handleSubmit = async() => {
+    const data={
+      "energy_saving":energySaving,
+      "water_usage":waterUsage,
+      "username":user.username
+    }
+
+    try{
+      const res = await axios.post('http://127.0.0.1:8000/api/lifestylehabits/',data)
+      console.log(res.data)
+      message.success('Energy Usage details received!')
+      submit()
+    }catch(err){
+      if(err.response){
+        message.error(err.response.data.msg)
+      }
+      else{
+        message.error("Network Error!")
+      }
+    }
   };
 
   return (
