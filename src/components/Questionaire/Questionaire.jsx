@@ -24,9 +24,7 @@ const Questionaire = () => {
       setCurrentForm(currentForm + 1);
     } else {
       localStorage.removeItem('temp_access')
-
-      //? Implement method for logging in user and creating profile 
-      navigate('/login')
+      //? Create a user profile with provided data
     }
   };
 

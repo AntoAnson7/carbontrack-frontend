@@ -1,11 +1,13 @@
 import React from 'react';
 import { Button } from 'antd';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
 
-const Unauthorized = () => {
-  const handleGoBack = () => {
-    // Logic to redirect or go back
-    window.history.back();
+const NoDataTakeSurvey = () => {
+    const navigate = useNavigate()
+  const handleClick = () => {
+    localStorage.setItem('temp_access',true)
+    navigate('/questionaire')
   };
 
   return (
@@ -31,19 +33,19 @@ const Unauthorized = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2F404.png?alt=media&token=4ae5ccc2-5496-4f4f-80b8-07a73813fd4b" style={{width:'500px'}}/>
+                src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2F404.png?alt=media&token=4ae5ccc2-5496-4f4f-80b8-07a73813fd4b" style={{width:'400px'}}/>
         </div>
       <div>
         <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem',color: '#abde04'}}>
-          403 Unauthorized
+          No Data Available
         </h1>
         <p style={{ fontSize: '16px', marginBottom: '2rem' }}>
-          Uh Oh, You don’t have permission to access this page!
+          Uh Oh, You have'nt yet completed our survey, Complete the quick survey to get valuable personalized insights into your carbon footprint!
         </p>
 
         <Button
           type="primary"
-          onClick={handleGoBack}
+          onClick={handleClick}
           style={{
             backgroundColor: '#abde04',
             borderColor: '#abde04',
@@ -51,11 +53,11 @@ const Unauthorized = () => {
             fontWeight: 'bold',
           }}
         >
-          Go Back
+          Complete Survey
         </Button>
       </div>
     </motion.div>
   );
 };
 
-export default Unauthorized;
+export default NoDataTakeSurvey;

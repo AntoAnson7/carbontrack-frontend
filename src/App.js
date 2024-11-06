@@ -8,6 +8,7 @@ import Unauthorized from './components/Errors/Unauthorized';
 import Dashboard from './pages/Dashboard/Dashboard'
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './Redux/userSlice';
+import { fetchProfile } from './Redux/profileSlice';
 import { useEffect } from 'react';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       dispatch(fetchUser(token));
+      dispatch(fetchProfile(token))
     }
   }, [dispatch]);
 

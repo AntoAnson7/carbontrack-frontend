@@ -13,7 +13,7 @@ const initialState = {
   user: null,
   isLoggedIn: false,
   loading: false,
-  error: null,
+  error: null
 };
 
 const userSlice = createSlice({

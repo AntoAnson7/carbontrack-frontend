@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom'; 
 import { message,Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser, clearUser } from '../../Redux/userSlice';
+import { setUser } from '../../Redux/userSlice';
+import { setProfile } from '../../Redux/profileSlice'
 import './Login_Signup.css'
 
 const Login = () => {
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate(); 
     const dispatch = useDispatch();
     const user = useSelector((state)=>state.user.user)
     
@@ -29,7 +30,19 @@ const Login = () => {
 
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/login/', formData);
+            const profile = await axios.get('http://127.0.0.1:8000/api/profile/',{
+                headers : {
+                    Authorization : `Bearer ${res.data.access}`
+                }
+            })
+            //! Test logs -----------------------
+            console.log(profile.data)
             console.log(res.data)
+            //! ---------------------------------
+    
+            console.log('Dispatching profile:', profile.data[0]);
+            dispatch(setProfile(profile.data[0]));
+            
             localStorage.setItem('token', res.data.access); 
             dispatch(setUser(res.data.user))
             message.success('Login Successful!');

@@ -30,11 +30,10 @@ const Signup = () => {
             try {
                 const { confirm_password, ...data } = formData;
                 const res = await axios.post('http://127.0.0.1:8000/api/register/', data);
-                localStorage.setItem('temp_access',true)
                 dispatch(setUser(res.data.user))
                 message.success("Registration Successfull!")
                 setFormData({ username: '', email: '', password: '',confirm_password:'' });
-                navigate('/questionaire');
+                navigate('/');
             } catch (err) {
                 if (err.response) {
                     console.log(err.response)
