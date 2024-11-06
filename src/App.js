@@ -10,6 +10,9 @@ import { useDispatch } from 'react-redux';
 import { fetchUser } from './Redux/userSlice';
 import { fetchProfile } from './Redux/profileSlice';
 import { useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './components/Navbar/Navbar';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +30,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home/>}/>
+          <Route path="/nav" element={<Navbar/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Signup/>}/>
 
