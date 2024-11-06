@@ -3,7 +3,7 @@ import { Select, Button } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { message } from 'antd';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const WasteManagement = ({submit}) => {
   const user = useSelector((state)=>state.user.user)
@@ -19,7 +19,6 @@ const WasteManagement = ({submit}) => {
 
     try{
       const res = await axios.post('http://127.0.0.1:8000/api/wastemanagement/',data)
-      console.log(res.data)
       message.success('Waste management details received!')
       submit()
     }catch(err){

@@ -1,7 +1,8 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { setUser, clearUser } from '../../Redux/userSlice';
+import { clearProfile } from '../../Redux/profileSlice';
+import { clearUser } from '../../Redux/userSlice';
 
 function Logout() {
   const navigate = useNavigate()
@@ -12,11 +13,27 @@ function Logout() {
         localStorage.removeItem('temp_access')
         localStorage.removeItem('token')
         dispatch(clearUser())
+        dispatch(clearProfile())
         navigate('/')
     }
   return (
     <div>
-        <button className='btn btn-danger m-20' onClick={Logout}>Logout</button>
+        <button 
+          style={{
+            backgroundColor:"#abde04",
+            color:'white',
+            width:'100%',
+            textAlign:'start',
+            border:'none',
+            outline:'none',
+            borderRadius:'2px',
+            height:'35px',
+            paddingLeft:'5px'
+          }}
+          onClick={Logout}
+         >
+          Logout
+          </button>
     </div>
   )
 }

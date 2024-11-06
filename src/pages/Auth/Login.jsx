@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom'; 
 import { message,Input } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../../Redux/userSlice';
 import { setProfile } from '../../Redux/profileSlice'
 import './Login_Signup.css'
@@ -10,7 +10,6 @@ import './Login_Signup.css'
 const Login = () => {
     const navigate = useNavigate(); 
     const dispatch = useDispatch();
-    const user = useSelector((state)=>state.user.user)
     
     const [formData, setFormData] = useState({
         username: '',
@@ -41,7 +40,7 @@ const Login = () => {
             //! ---------------------------------
     
             console.log('Dispatching profile:', profile.data[0]);
-            dispatch(setProfile(profile.data[0]));
+            profile.data.length>0&&dispatch(setProfile(profile.data[0]));
             
             localStorage.setItem('token', res.data.access); 
             dispatch(setUser(res.data.user))

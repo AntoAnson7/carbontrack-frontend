@@ -1,13 +1,10 @@
 import React from 'react';
 import { Button } from 'antd';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router';
 
-const NoDataTakeSurvey = () => {
-    const navigate = useNavigate()
-  const handleClick = () => {
-    localStorage.setItem('temp_access',true)
-    navigate('/questionaire')
+const Unauthorized = () => {
+  const handleGoBack = () => {
+    window.history.back();
   };
 
   return (
@@ -33,31 +30,33 @@ const NoDataTakeSurvey = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2F404.png?alt=media&token=4ae5ccc2-5496-4f4f-80b8-07a73813fd4b" style={{width:'400px'}}/>
+                src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fundraw_under_construction_46pa.png?alt=media&token=c63629ec-d054-4d58-90f2-bf825d6025b8" style={{width:'500px'}}/>
         </div>
       <div>
         <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem',color: '#abde04'}}>
-          No Data Available
+          Page Unavailable
         </h1>
         <p style={{ fontSize: '16px', marginBottom: '2rem' }}>
-          Uh Oh, You have'nt yet completed our survey, Complete the quick survey to get valuable personalized insights into your carbon footprint!
+          Uh Oh, The page you're looking for is unavailable, Make sure to double check the url's!
         </p>
 
-        <Button
-          type="primary"
-          onClick={handleClick}
-          style={{
-            backgroundColor: '#abde04',
-            borderColor: '#abde04',
-            color: 'white',
-            fontWeight: 'bold',
-          }}
-        >
-          Complete Survey
-        </Button>
+        <div className="resolve-links" style={{display:'flex',gap:'15px',justifyContent:'center'}}>
+          <Button
+            type="primary"
+            onClick={handleGoBack}
+            style={{
+              backgroundColor: '#abde04',
+              borderColor: '#abde04',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
       </div>
     </motion.div>
   );
 };
 
-export default NoDataTakeSurvey;
+export default Unauthorized;

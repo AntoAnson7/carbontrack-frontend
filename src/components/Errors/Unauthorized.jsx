@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button } from 'antd';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
 
 const Unauthorized = () => {
+  const navigate = useNavigate()
   const handleGoBack = () => {
-    // Logic to redirect or go back
     window.history.back();
   };
 
@@ -14,7 +15,7 @@ const Unauthorized = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       style={{
-        height: '100vh',
+        height: '80vh',
         display: 'flex',
         flexDirection:'column',
         gap:'20px',
@@ -38,21 +39,35 @@ const Unauthorized = () => {
           403 Unauthorized
         </h1>
         <p style={{ fontSize: '16px', marginBottom: '2rem' }}>
-          Uh Oh, You don’t have permission to access this page!
+          Uh Oh, You don’t have permission to access this page {!localStorage.getItem('token')&&"Try signing in to see if it resolves the issue!" }!
         </p>
 
-        <Button
-          type="primary"
-          onClick={handleGoBack}
-          style={{
-            backgroundColor: '#abde04',
-            borderColor: '#abde04',
-            color: 'white',
-            fontWeight: 'bold',
-          }}
-        >
-          Go Back
-        </Button>
+        <div className="resolve-links" style={{display:'flex',gap:'15px',justifyContent:'center'}}>
+          <Button
+            type="primary"
+            onClick={handleGoBack}
+            style={{
+              backgroundColor: '#abde04',
+              borderColor: '#abde04',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Go Back
+          </Button>
+          {!localStorage.getItem('token')&&<Button
+            type="primary"
+            onClick={()=>navigate('/login')}
+            style={{
+              backgroundColor: '#abde04',
+              borderColor: '#abde04',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Log in
+          </Button>}
+        </div>
       </div>
     </motion.div>
   );

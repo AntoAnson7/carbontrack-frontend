@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { message } from 'antd';
 import './Styles/Transportation.css'
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const { Option } = Select;
 
@@ -17,7 +17,6 @@ const Transportation = ({submit}) => {
   const [airTravel, setAirTravel] = useState(0);
 
   const handleSubmit = async() => {
-    console.log("Transportation Posted");
     const data = { 
       "daily_commute":dailyCommute, 
       "fuel_type":fuelType, 
@@ -27,7 +26,6 @@ const Transportation = ({submit}) => {
     }
     try{
       const res = await axios.post('http://127.0.0.1:8000/api/transportation/',data)
-      console.log(res.data)
       message.success('Transportation details received!')
       submit()
     }catch(err){

@@ -12,7 +12,6 @@ Chart.register(CategoryScale);
 
 const Dashboard = () => {
     const navigate = useNavigate()
-    const user = useSelector((state)=>state.user.user)
     const isLoggedIn = useSelector((state)=>state.user.isLoggedIn)
     const profile = useSelector((state) => state.profile);
 
@@ -26,17 +25,6 @@ const Dashboard = () => {
         return () => clearTimeout(timer); 
     }, [isLoggedIn, navigate,profile]);
 
-    // Hardcoded user data
-    const userData = {
-        daily_carbon_footprint: 9.52786301369863,
-        yearly_carbon_footprint: 3477.67,
-        transportation_emissions: 3.3778630136986303,
-        home_energy_emissions: 0.0,
-        food_emissions: 5.3,
-        shopping_emissions: 0.15,
-        waste_emissions: 0.7,
-        lifestyle_emissions: 0.0,
-    };
 
     // Approximate national averages for India
     const nationalAverages = {
@@ -51,12 +39,12 @@ const Dashboard = () => {
     };
 
     const categories = [
-        { name: "Transportation", userEmission: userData.transportation_emissions, avgEmission: nationalAverages.transportation },
-        { name: "Home Energy", userEmission: userData.home_energy_emissions, avgEmission: nationalAverages.home_energy },
-        { name: "Food", userEmission: userData.food_emissions, avgEmission: nationalAverages.food },
-        { name: "Shopping", userEmission: userData.shopping_emissions, avgEmission: nationalAverages.shopping },
-        { name: "Waste", userEmission: userData.waste_emissions, avgEmission: nationalAverages.waste },
-        { name: "Lifestyle", userEmission: userData.lifestyle_emissions, avgEmission: nationalAverages.lifestyle }
+        { name: "Transportation", userEmission: profile.profile.transportation_emissions, avgEmission: nationalAverages.transportation },
+        { name: "Home Energy", userEmission: profile.profile.home_energy_emissions, avgEmission: nationalAverages.home_energy },
+        { name: "Food", userEmission: profile.profile.food_emissions, avgEmission: nationalAverages.food },
+        { name: "Shopping", userEmission: profile.profile.shopping_emissions, avgEmission: nationalAverages.shopping },
+        { name: "Waste", userEmission: profile.profile.waste_emissions, avgEmission: nationalAverages.waste },
+        { name: "Lifestyle", userEmission: profile.profile.lifestyle_emissions, avgEmission: nationalAverages.lifestyle }
     ];
 
     return (
@@ -70,7 +58,7 @@ const Dashboard = () => {
                         <Card className="summary-card" style={{ backgroundColor: '#f9fafb', boxShadow: '3px 3px 10px lightgrey' }}>
                             <motion.div whileHover={{ scale: 1.05 }}>
                                 <h3 style={{ color: '#333' }}>Daily Carbon Footprint</h3>
-                                <p>{userData.daily_carbon_footprint.toFixed(2)} kg</p>
+                                <p>{profile.profile.daily_carbon_footprint.toFixed(2)} kg</p>
                                 <p style={{ color: '#abde04' }}>National Avg: {nationalAverages.daily} kg</p>
                             </motion.div>
                         </Card>
@@ -79,7 +67,7 @@ const Dashboard = () => {
                         <Card className="summary-card" style={{ backgroundColor: '#f9fafb', boxShadow: '3px 3px 10px lightgrey' }}>
                             <motion.div whileHover={{ scale: 1.05 }}>
                                 <h3 style={{ color: '#333' }}>Yearly Carbon Footprint</h3>
-                                <p>{userData.yearly_carbon_footprint.toFixed(2)} kg</p>
+                                <p>{profile.profile.yearly_carbon_footprint.toFixed(2)} kg</p>
                                 <p style={{ color: '#abde04' }}>National Avg: {nationalAverages.yearly} kg</p>
                             </motion.div>
                         </Card>

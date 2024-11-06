@@ -3,6 +3,7 @@ body {
   padding: 0;
   color: black;
   font-family: sans-serif;
+  overflow-x: hidden;
 }
 
 .my-test{
@@ -13,3 +14,4 @@ body {
   padding: 10px;
   border-radius: 10px;
 }
+

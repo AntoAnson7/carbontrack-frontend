@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login_Signup.css' 
-import { message,Input,Button } from 'antd'; 
-import {setUser,clearUser} from '../../Redux/userSlice'
-import { useDispatch,useSelector } from 'react-redux';
+import { message,Input } from 'antd'; 
+import {setUser} from '../../Redux/userSlice'
+import { useDispatch } from 'react-redux';
 
 const Signup = () => {
     const dispatch = useDispatch()
@@ -26,14 +26,14 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(formData['confirm_password']==formData['password']){
+        if(formData['confirm_password']===formData['password']){
             try {
                 const { confirm_password, ...data } = formData;
                 const res = await axios.post('http://127.0.0.1:8000/api/register/', data);
-                dispatch(setUser(res.data.user))
-                message.success("Registration Successfull!")
+                
+                message.success("Registration Successfull, Login to continue!")
                 setFormData({ username: '', email: '', password: '',confirm_password:'' });
-                navigate('/');
+                navigate('/login');
             } catch (err) {
                 if (err.response) {
                     console.log(err.response)

@@ -3,7 +3,7 @@ import { Select, InputNumber, Button } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { message } from 'antd';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const FoodAndDiet = ({submit}) => {
   const user = useSelector((state)=>state.user.user)
@@ -22,7 +22,6 @@ const FoodAndDiet = ({submit}) => {
 
     try{
       const res = await axios.post('http://127.0.0.1:8000/api/fooddiet/',data)
-      console.log(res.data)
       message.success('Food and Diet details received!')
       submit()
     }catch(err){
@@ -44,7 +43,7 @@ const FoodAndDiet = ({submit}) => {
   >
       <div className='questionaire'>
         <div className="t-top">
-          <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Ffood.png?alt=media&token=29ea582c-4927-4626-91a5-e00b2fcae96a" alt="" style={{width:'56%'}}/>
+          <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Ffood.png?alt=media&token=29ea582c-4927-4626-91a5-e00b2fcae96a" alt="" style={{width:'49%'}}/>
         </div>
         <form className="t-form">
           <div className="diet-type">

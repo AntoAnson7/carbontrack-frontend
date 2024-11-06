@@ -3,7 +3,7 @@ import { Select, InputNumber, Button } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios'
 import {message} from 'antd'
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const HomeEnergy = ({submit}) => {
   const user = useSelector((state)=>state.user.user)
@@ -24,7 +24,6 @@ const HomeEnergy = ({submit}) => {
 
     try{
       const res = await axios.post('http://127.0.0.1:8000/api/energy/',data)
-      console.log(res.data)
       message.success('Energy Usage details received!')
       submit()
     }catch(err){
@@ -46,7 +45,7 @@ const HomeEnergy = ({submit}) => {
   >
     <div className="questionaire">
       <div className="t-top">
-        <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fenergy.png?alt=media&token=b35a6952-42b5-4745-ad0d-d00aeddef039" alt="" />
+        <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fenergy.png?alt=media&token=b35a6952-42b5-4745-ad0d-d00aeddef039" alt="" style={{width:'500px'}}/>
       </div>
       <form className="t-form">
         <div className="monthly-consumption">

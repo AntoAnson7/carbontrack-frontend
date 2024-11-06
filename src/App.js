@@ -1,4 +1,4 @@
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup';
@@ -12,6 +12,7 @@ import { fetchProfile } from './Redux/profileSlice';
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/Navbar/Navbar';
+import PageUnavailable from './components/Errors/PageUnavailable'
 
 
 function App() {
@@ -28,19 +29,20 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <Navbar/>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/nav" element={<Navbar/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Signup/>}/>
-
-
+          <Route path="/logout" element={<Logout/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
 
-          <Route path="/logout" element={<Logout/>}/>
+          {/* Errors */}
           <Route path="/unauthorized" element={<Unauthorized/>}/>
+          <Route path="/unavailable" element={<PageUnavailable />} />
+          <Route path="*" element={<Navigate to="/unavailable" />} />
 
-          {/* Questionaire paths */}
+          {/* Questionaire path */}
           <Route path="/questionaire" element={<Questionaire/>}/>
         </Routes>
       </Router>

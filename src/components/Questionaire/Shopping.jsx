@@ -3,7 +3,7 @@ import { Select, Button } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { message } from 'antd';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Shopping = ({submit}) => {
   const user = useSelector((state)=>state.user.user)
@@ -21,7 +21,6 @@ const Shopping = ({submit}) => {
 
     try{
       const res = await axios.post('http://127.0.0.1:8000/api/shoppinggoods/',data)
-      console.log(res.data)
       message.success('Shopping and Purchase details received!')
       submit()
     }catch(err){
@@ -43,7 +42,7 @@ const Shopping = ({submit}) => {
   >
     <div className="questionaire">
       <div className="t-top">
-        <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fshopping.png?alt=media&token=5744efab-27f3-4182-89ee-f33c1d28fd5e" alt="" />
+        <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fshopping.png?alt=media&token=5744efab-27f3-4182-89ee-f33c1d28fd5e" alt="" style={{width:'60%'}}/>
       </div>
       <form className="t-form">
         <div>
