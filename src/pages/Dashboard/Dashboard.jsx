@@ -48,7 +48,7 @@ const Dashboard = () => {
     ];
 
     return (
-        <div className="dashboard" style={{ padding: '20px' }}>
+        <div className="dashboard" style={{ padding: '20px',paddingLeft:260 }}>
             {profile.available?<div className="data-available">
                 <h2 className="dashboard-title" style={{ color: '#abde04', textAlign: 'center', marginBottom: '20px' }}>Carbon Footprint Dashboard</h2>
                 

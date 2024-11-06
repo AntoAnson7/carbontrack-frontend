@@ -11,7 +11,7 @@ import { fetchUser } from './Redux/userSlice';
 import { fetchProfile } from './Redux/profileSlice';
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './components/Navbar/Navbar';
+import Sidebar from './components/Sidebar/Sidebar';
 import PageUnavailable from './components/Errors/PageUnavailable'
 
 
@@ -29,7 +29,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar/>
+        <Sidebar/>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>

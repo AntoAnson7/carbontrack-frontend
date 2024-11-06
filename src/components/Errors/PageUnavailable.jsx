@@ -13,7 +13,7 @@ const Unauthorized = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       style={{
-        height: '80vh',
+        height: '100vh',
         display: 'flex',
         flexDirection:'column',
         gap:'20px',
@@ -23,6 +23,7 @@ const Unauthorized = () => {
         
         textAlign: 'center',
         padding: '20px',
+        paddingLeft:256
       }}
     >
         <div className="unauth-img">

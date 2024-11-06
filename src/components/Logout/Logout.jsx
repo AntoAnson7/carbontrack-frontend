@@ -22,12 +22,12 @@ function Logout() {
           style={{
             backgroundColor:"#abde04",
             color:'white',
-            width:'100%',
+            width:'120%',
             textAlign:'start',
             border:'none',
             outline:'none',
             borderRadius:'2px',
-            height:'35px',
+            height:'30px',
             paddingLeft:'5px'
           }}
           onClick={Logout}

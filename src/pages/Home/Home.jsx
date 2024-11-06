@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 function Home() {
   const user = useSelector((state)=>state.user.user)
   return (
-    <div>
+    <div style={{paddingLeft:260}}>
       <p>{user&&user.username}</p>
       {!user&&<p> Not logged in</p>}
     </div>
