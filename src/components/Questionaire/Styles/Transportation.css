@@ -1,12 +1,13 @@
 .transportation{
-    height: 85vh;
+    height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-left: 256px;
 }
 .questionaire{
-    width:50%;
+    width:60%;
     display: flex;
     flex-direction: column;
     border-radius: 10px;

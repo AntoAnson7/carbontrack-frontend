@@ -6,8 +6,8 @@ function Home() {
   const user = useSelector((state)=>state.user.user)
   return (
     <div style={{paddingLeft:260}}>
-      <p>{user&&user.username}</p>
-      {!user&&<p> Not logged in</p>}
+      {/* <p>{user&&}</p> */}
+      {user?<p>{user.username}</p>:<p> Not logged in</p>}
     </div>
   )
 }

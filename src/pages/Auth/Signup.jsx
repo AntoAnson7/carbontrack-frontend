@@ -54,7 +54,7 @@ const Signup = () => {
         <div className="signup-container">
 
             <div className="auth-left">
-            <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fsignup.png?alt=media&token=5a8434b5-02a2-4d56-b805-d5fc74a48bd4" alt="" style={{width:'700px'}}/>
+            <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fsignup.png?alt=media&token=5a8434b5-02a2-4d56-b805-d5fc74a48bd4" alt="" style={{width:'500px'}}/>
             </div>
             
             <div className="auth-right">

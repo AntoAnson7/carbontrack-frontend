@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UserIcon from './UserIcon';
 import './Sidebar.css'
-import Logout from '../Logout/Logout';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
+import { clearUser } from '../../Redux/userSlice';
+import { clearProfile } from '../../Redux/profileSlice';
+
 
 const items = [
   {
@@ -35,6 +40,24 @@ const items = [
     icon: <SettingOutlined />,
     label: <Link to='/register'>Register</Link>,
   },
+
+  {
+    key: '6',
+    icon: <SettingOutlined />,
+    label: <Link to='/sandbox'>Sandbox</Link>,
+  },
+
+  {
+    key: '7',
+    icon: <SettingOutlined />,
+    label: <Link to='/offset'>Offset Programs</Link>,
+  },
+
+  {
+    key: '8',
+    icon: <SettingOutlined />,
+    label: <Link to='/goals'>Set Goals</Link>,
+  },
 ];
 
 const getLevelKeys = (items1) => {
@@ -56,8 +79,19 @@ const getLevelKeys = (items1) => {
 const levelKeys = getLevelKeys(items);
 
 const Sidebar = () => {
-    const user = useSelector((state)=>state.user.user)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const user = useSelector((state)=>state.user.user)
   const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
+
+  const HandleLogout = () =>{
+    localStorage.removeItem('user');
+    localStorage.removeItem('temp_access');
+    localStorage.removeItem('token');
+    dispatch(clearUser());
+    dispatch(clearProfile());
+    navigate('/');
+  }
 
   const onOpenChange = (openKeys) => {
     const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
@@ -83,9 +117,10 @@ const Sidebar = () => {
       justifyContent: 'space-between',
       height: '100vh',
       width: 256,
-      position: 'absolute',
+      position: 'fixed',
       padding: '10px',
-      backgroundColor:'white'
+      backgroundColor:'white',
+      boxShadow: '4px 0px 10px rgba(0,0,0,0.06)',
     }}>
 
       <div style={{ marginBottom: '20px'}}>
@@ -109,17 +144,24 @@ const Sidebar = () => {
       />
 
       {user&&<div style={{ marginTop: '20px' }} className='sidebar-profile'>
-        <UserIcon username={user?.username}/>
-        <hr />
-        <div className="sidebar-profile-right">
-            <p style={{margin:0,opacity:'70%'}}>@{user.username}</p>
-            <Logout/>
+        <div className="logged-in">
+          <UserIcon username={user?.username}/>
+          <div className="sidebar-profile-right">
+                <p style={{margin:0,opacity:'70%'}}>@{user.username}</p>
+          </div>
+          <FontAwesomeIcon icon={faSignOutAlt} className='log-logout'onClick={HandleLogout}/>
         </div>
       </div>}
 
       {!user&&
       <div style={{ marginTop: '20px' }} className='sidebar-profile'>
-        <p>Not logged in</p>
+                <div className="logged-in">
+          <UserIcon username={'?'}/>
+          <div className="sidebar-profile-right">
+                <p style={{margin:0,opacity:'70%'}}>Log in</p>
+          </div>
+          <FontAwesomeIcon icon={faSignOutAlt} className='log-logout'onClick={()=>navigate('/login')}/>
+        </div>
       </div>}
 
     </div>

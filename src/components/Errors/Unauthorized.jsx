@@ -25,7 +25,7 @@ const Unauthorized = () => {
         
         textAlign: 'center',
         padding: '20px',
-        paddingLeft:256
+        paddingLeft:206
       }}
     >
         <div className="unauth-img">

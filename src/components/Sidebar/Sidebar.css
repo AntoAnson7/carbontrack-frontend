@@ -20,11 +20,8 @@
   }
   
   .sidebar-profile{
-      /* background-color: pink */
       height: 15%;
       padding: 10px;
-      display: flex;
-      gap: 6px;
   }
 
   .sidebar-profile-right{
@@ -37,4 +34,24 @@
 
   .sidebar-main{
     box-shadow: 5px 5px 10px solid grey;
+  }
+
+  .logged-in{
+    background-color: #F5F5F5;
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .log-logout{
+    color: rgba(0,0,0,0.6);
+    padding-left: 50px;
+    transition: all 0.2s ease-in;
+  }
+  .log-logout:hover{
+    cursor: pointer;
+    transform: scale(1.02);
   }

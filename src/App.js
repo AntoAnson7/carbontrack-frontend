@@ -1,9 +1,8 @@
-import {BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom'
+import {BrowserRouter as Router,Routes,Route,Navigate,useLocation} from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup';
 import Questionaire from './components/Questionaire/Questionaire';
-import Logout from './components/Logout/Logout';
 import Unauthorized from './components/Errors/Unauthorized';
 import Dashboard from './pages/Dashboard/Dashboard'
 import { useDispatch } from 'react-redux';
@@ -13,10 +12,18 @@ import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import PageUnavailable from './components/Errors/PageUnavailable'
+import Sandbox from './pages/Sandbox/Sandbox';
+import Offset from './pages/Offset/Offset';
+import Goals from './pages/Goals/Goals';
+import NotificationManager from './components/Notification/NotificationManager';
 
 
 function App() {
+  const location = useLocation()
   const dispatch = useDispatch();
+
+  const hideSidebarIn = ['/','/login','/register']
+  const hideSidebar = hideSidebarIn.includes(location.pathname)
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,14 +35,16 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Sidebar/>
+        <NotificationManager />
+        {!hideSidebar&&<Sidebar/>}
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Signup/>}/>
-          <Route path="/logout" element={<Logout/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/sandbox" element={<Sandbox/>}/>
+          <Route path="/offset" element={<Offset/>}/>
+          <Route path="/goals" element={<Goals/>}/>
 
           {/* Errors */}
           <Route path="/unauthorized" element={<Unauthorized/>}/>
@@ -45,8 +54,6 @@ function App() {
           {/* Questionaire path */}
           <Route path="/questionaire" element={<Questionaire/>}/>
         </Routes>
-      </Router>
-
     </div>
   );
 }

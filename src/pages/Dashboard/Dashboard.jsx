@@ -1,34 +1,27 @@
 import React, { useEffect } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
-import { Card, Row, Col } from 'antd';
-import { motion } from 'framer-motion';
-import { CategoryScale } from 'chart.js';
-import Chart from 'chart.js/auto';
-import {useSelector} from 'react-redux'
+import { Card, Row, Col, Statistic, Typography } from 'antd';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import NoDataTakeSurvey from '../../components/Errors/NoDataTakeSurvey'
+import { Progress, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
+import NoDataTakeSurvey from '../../components/Errors/NoDataTakeSurvey';
+import './Dashboard.css'
 
-Chart.register(CategoryScale);
+const { Text } = Typography;
 
 const Dashboard = () => {
-    const navigate = useNavigate()
-    const isLoggedIn = useSelector((state)=>state.user.isLoggedIn)
-    const profile = useSelector((state) => state.profile);
-
+    const navigate = useNavigate();
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+    const profile = useSelector((state) => state.profile.profile);
+    const profileAvailable = useSelector((state) => state.profile.available);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            if (!isLoggedIn) {
-                navigate('/unauthorized');
-            }
-        }, 200);
-        return () => clearTimeout(timer); 
-    }, [isLoggedIn, navigate,profile]);
+        if (!isLoggedIn) {
+            navigate('/unauthorized');
+        }
+    }, [isLoggedIn, navigate]);
 
-
-    // Approximate national averages for India
     const nationalAverages = {
-        daily: 7.0,
+        daily: 7.9,
         yearly: 2565,
         transportation: 1.5,
         home_energy: 1.2,
@@ -38,100 +31,109 @@ const Dashboard = () => {
         lifestyle: 1.0
     };
 
-    const categories = [
-        { name: "Transportation", userEmission: profile.profile.transportation_emissions, avgEmission: nationalAverages.transportation },
-        { name: "Home Energy", userEmission: profile.profile.home_energy_emissions, avgEmission: nationalAverages.home_energy },
-        { name: "Food", userEmission: profile.profile.food_emissions, avgEmission: nationalAverages.food },
-        { name: "Shopping", userEmission: profile.profile.shopping_emissions, avgEmission: nationalAverages.shopping },
-        { name: "Waste", userEmission: profile.profile.waste_emissions, avgEmission: nationalAverages.waste },
-        { name: "Lifestyle", userEmission: profile.profile.lifestyle_emissions, avgEmission: nationalAverages.lifestyle }
+    const data = [
+        { category: 'Daily', value: profile&&profile.daily_carbon_footprint || 0, average: nationalAverages.daily },
+        { category: 'Yearly', value: profile&&profile.yearly_carbon_footprint || 0, average: nationalAverages.yearly },
+        { category: 'Transportation', value: profile&&profile.transportation_emissions || 0, average: nationalAverages.transportation },
+        { category: 'Home Energy', value: profile&&profile.home_energy_emissions || 0, average: nationalAverages.home_energy },
+        { category: 'Food', value: profile&&profile.food_emissions || 0, average: nationalAverages.food },
+        { category: 'Shopping', value: profile&&profile.shopping_emissions || 0, average: nationalAverages.shopping },
+        { category: 'Waste', value: profile&&profile.waste_emissions || 0, average: nationalAverages.waste },
+        { category: 'Lifestyle', value: profile&&profile.lifestyle_emissions || 0, average: nationalAverages.lifestyle }
     ];
 
+    const getComparisonText = (value, average) => {
+        if (value < average) return 'Below national average. Great job!';
+        return 'Above national average. Consider taking steps to reduce emissions.';
+    };
+
     return (
-        <div className="dashboard" style={{ padding: '20px',paddingLeft:260 }}>
-            {profile.available?<div className="data-available">
-                <h2 className="dashboard-title" style={{ color: '#abde04', textAlign: 'center', marginBottom: '20px' }}>Carbon Footprint Dashboard</h2>
-                
-                {/* Summary Section */}
-                <Row gutter={[16, 16]} className="summary-section">
-                    <Col span={12}>
-                        <Card className="summary-card" style={{ backgroundColor: '#f9fafb', boxShadow: '3px 3px 10px lightgrey' }}>
-                            <motion.div whileHover={{ scale: 1.05 }}>
-                                <h3 style={{ color: '#333' }}>Daily Carbon Footprint</h3>
-                                <p>{profile.profile.daily_carbon_footprint.toFixed(2)} kg</p>
-                                <p style={{ color: '#abde04' }}>National Avg: {nationalAverages.daily} kg</p>
-                            </motion.div>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card className="summary-card" style={{ backgroundColor: '#f9fafb', boxShadow: '3px 3px 10px lightgrey' }}>
-                            <motion.div whileHover={{ scale: 1.05 }}>
-                                <h3 style={{ color: '#333' }}>Yearly Carbon Footprint</h3>
-                                <p>{profile.profile.yearly_carbon_footprint.toFixed(2)} kg</p>
-                                <p style={{ color: '#abde04' }}>National Avg: {nationalAverages.yearly} kg</p>
-                            </motion.div>
-                        </Card>
-                    </Col>
-                </Row>
-                {/* Emissions by Category */}
-                <div className="emissions-category" style={{ marginTop: '40px' }}>
-                    <h3 style={{ color: '#333', textAlign: 'center', marginBottom: '20px' }}>Emissions Breakdown</h3>
-                    <motion.div whileHover={{ scale: 1.02 }}>
-                        <Bar
-                            data={{
-                                labels: categories.map(cat => cat.name),
-                                datasets: [
-                                    { label: 'User Emissions (kg)', data: categories.map(cat => cat.userEmission), backgroundColor: '#abde04' },
-                                    { label: 'National Avg (kg)', data: categories.map(cat => cat.avgEmission), backgroundColor: '#e0e0e0' }
-                                ]
-                            }}
-                            options={{
-                                responsive: true,
-                                plugins: {
-                                    legend: { display: true, position: 'top' }
-                                }
-                            }}
-                        />
-                    </motion.div>
-                </div>
-                {/* Historical Trends */}
-                <div className="historical-trends" style={{ marginTop: '40px' }}>
-                    <h3 style={{ color: '#333', textAlign: 'center', marginBottom: '20px' }}>Emission Trends</h3>
-                    <motion.div whileHover={{ scale: 1.02 }}>
-                        <Line
-                            data={{
-                                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],  // Replace with actual time periods
-                                datasets: [{
-                                    label: 'Daily Carbon Footprint',
-                                    data: [8.5, 9.2, 9.0, 9.4, 9.3, 9.5], // Example data
-                                    backgroundColor: '#abde04',
-                                    borderColor: '#abde04'
-                                }]
-                            }}
-                            options={{
-                                responsive: true,
-                                plugins: {
-                                    legend: { display: true, position: 'top' }
-                                }
-                            }}
-                        />
-                    </motion.div>
-                </div>
-                {/* Recommendations */}
-                <div className="recommendations" style={{ marginTop: '40px', textAlign: 'center' }}>
-                    <h3 style={{ color: '#333' }}>Recommendations</h3>
-                    <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                        {categories
-                            .filter(cat => cat.userEmission > cat.avgEmission)
-                            .map((cat, index) => (
-                                <li key={index} style={{ color: '#666' }}>
-                                    Consider reducing your {cat.name.toLowerCase()} emissions by exploring sustainable alternatives.
-                                </li>
+        <div className="dashboard" style={{ padding: '20px', paddingLeft: 260 }}>
+            {profileAvailable ? (
+                <div className="profile-available">
+                    <div className="dash-pg-1">
+                        <div className="dash-header" style={{padding:'10px',paddingLeft:'15px'}}>
+                            <h1 style={{color:'#ABDE04'}}>Dashboard</h1>
+                            <hr />
+                        </div>
+                            <div className="daily-yearly">
+                                <Col span={10}>
+                                    <Card title={`${data[0].category} Footprint`} bordered>
+                                        <Statistic
+                                            title="Emissions (kg CO₂)"
+                                            value={data[0].value}
+                                            precision={2}
+                                        />
+                                        <ResponsiveContainer width="100%" height={200}>
+                                            <BarChart data={[{ name: data[0].category, user: data[0].value, average: data[0].average }]}>
+                                                <XAxis dataKey="name" />
+                                                <YAxis />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
+                                                <Bar dataKey="average" fill="#82ca9d" name="National Average" />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                        <Text type={data[0].value < data[0].average ? 'success' : 'warning'}>
+                                            {getComparisonText(data[0].value, data[0].average)}
+                                        </Text>
+                                    </Card>
+                                </Col>
+                                <Col span={10}>
+                                    <Card title={`Projected ${data[1].category} Footprint`} bordered>
+                                        <Statistic
+                                            title="Emissions (kg CO₂)"
+                                            value={data[1].value}
+                                            precision={2}
+                                        />
+                                        <ResponsiveContainer width="100%" height={200}>
+                                            <BarChart data={[{ name: data[1].category, user: data[1].value, average: data[1].average }]}>
+                                                <XAxis dataKey="name" />
+                                                <YAxis />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
+                                                <Bar dataKey="average" fill="#82ca9d" name="National Average" />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                        <Text type={data[1].value < data[1].average ? 'success' : 'warning'}>
+                                            {getComparisonText(data[1].value, data[1].average)}
+                                        </Text>
+                                    </Card>
+                                </Col>
+                            </div>
+                    </div>
+                    <Row gutter={[16, 16]}>
+                        {data.slice(2).map((item, index) => (
+                            <Col span={12} key={index}>
+                                <h1 style={{fontSize:'30px',color:'#abde04'}}>{item.category} Emmissions</h1>
+                                <hr />
+                                <Card title={`${item.category} Emissions`} bordered>
+                                    <Statistic
+                                        title="Emissions (kg CO₂)"
+                                        value={item.value}
+                                        precision={2}
+                                    />
+                                    <ResponsiveContainer width="100%" height={200}>
+                                        <BarChart data={[{ name: item.category, user: item.value, average: item.average }]}>
+                                            <XAxis dataKey="name" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
+                                            <Bar dataKey="average" fill="#82ca9d" name="National Average" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                    <Text type={item.value < item.average ? 'success' : 'warning'}>
+                                        {getComparisonText(item.value, item.average)}
+                                    </Text>
+                                </Card>
+                            </Col>
                         ))}
-                    </motion.ul>
+                    </Row>
                 </div>
-            </div>:(
-                <NoDataTakeSurvey/>
+            ) : (
+                <NoDataTakeSurvey />
             )}
         </div>
     );

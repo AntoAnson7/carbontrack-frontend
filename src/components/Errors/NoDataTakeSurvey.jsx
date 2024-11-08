@@ -26,7 +26,7 @@ const NoDataTakeSurvey = () => {
         
         textAlign: 'center',
         padding: '20px',
-        paddingLeft:256
+        paddingLeft:0
       }}
     >
         <div className="unauth-img">
