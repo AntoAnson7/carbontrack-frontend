@@ -1,15 +1,24 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-// import { setUser, clearUser } from '../../Redux/userSlice';
+import React from 'react';
+import NewsGrid from './NewsGrid';
+import QuoteGrid from './QuoteGrid';
+import TipGrid from './TipGrid';
+import Header from './Header';
+import Navbar from './Navbar';
+import './styles.css' 
 
-function Home() {
-  const user = useSelector((state)=>state.user.user)
+const Home = () => {
+
   return (
-    <div style={{paddingLeft:260}}>
-      <p>{user&&user.username}</p>
-      {!user&&<p> Not logged in</p>}
+    <div className="home-page1">
+      <Navbar/>
+      <Header/>
+      <div id='content'>
+      <TipGrid/>
+      <QuoteGrid/>
+      <NewsGrid/>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
