@@ -60,7 +60,7 @@ const Chatbot = () => {
       try {
         const vision = new ChatGoogleGenerativeAI({
           modelName: "gemini-1.5-pro", 
-          apiKey: "AIzaSyCjQMBC98trifaBesTdPv-KBbMwJESoY-8",
+          apiKey: process.env.REACT_APP_GEMINI_API_KEY,
         });
   
         const contents = [
