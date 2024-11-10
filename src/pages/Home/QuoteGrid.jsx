@@ -1,75 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Row, Col } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography } from 'antd';
 
-// Consolidated array of quotes
-const allQuotes = [
-  { quote: "The Earth is what we all have in common.", person: "Wendell Berry" },
-  { quote: "We do not inherit the earth from our ancestors, we borrow it from our children.", person: "Native American Proverb" },
-  { quote: "The greatest threat to our planet is the belief that someone else will save it.", person: "Robert Swan" },
-  { quote: "What we are doing to the forests of the world is but a mirror reflection of what we are doing to ourselves and to our fellow man.", person: "Mahatma Gandhi" },
-  { quote: "We can’t save the world unless we change the way we live.", person: "Jane Goodall" },
-  { quote: "It's not about being green, it's about being conscious.", person: "Al Gore" },
-  { quote: "Act as if what you do makes a difference. It does.", person: "William James" },
-  { quote: "The time to act is now.", person: "Greta Thunberg" },
-  // Add more quotes here if needed
+const { Text } = Typography;
+
+const quotes = [
+    { text: "The Earth is what we all have in common." },
+    { text: "Reduce what you buy, reuse what you have, and recycle what you cannot use." },
+    { text: "The greatest threat to our planet is the belief that someone else will save it." },
+    { text: "A small change can make a big impact. Start with your carbon footprint." },
+    { text: "There is no Planet B. Protect Earth, reduce your emissions." },
+    { text: "Our actions today will determine our tomorrow. Act wisely." },
+    { text: "Act as if what you do makes a difference. It does." },
+    { text: "Be the change you wish to see for the planet." },
+    { text: "The future depends on what we do in the present." },
+    { text: "Let’s join hands to reduce our carbon footprint." },
+    { text: "Small changes in everyday habits can create a big impact." },
+    { text: "Our planet's future is not a luxury; it’s a necessity." },
+    { text: "Change starts with awareness and a commitment to act." },
+    { text: "The climate is changing. Are we?" },
+    { text: "Living sustainably means thinking of the planet with every action." },
+    { text: "Protecting our planet is not a choice; it’s a responsibility." },
+    { text: "Save the Earth. It’s the only planet with coffee and chocolate!" },
+    { text: "Reducing your carbon footprint is a step toward a greener tomorrow." },
+    { text: "Think globally, act locally. Our planet is our responsibility." },
+    { text: "Let’s leave a green footprint, not a carbon footprint." },
 ];
 
-const getRandomQuotes = (quotes, num) => {
-  // Shuffle the array and return a subset of `num` items
-  const shuffled = [...quotes].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, num);
+
+const Quotes = () => {
+    const [displayedText, setDisplayedText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [index, setIndex] = useState(0);
+    const [blink, setBlink] = useState(true);
+    const [quoteIndex, setQuoteIndex] = useState(0);
+
+    useEffect(() => {
+        let timer;
+        const quote = quotes[quoteIndex].text;
+
+        if (isDeleting) {
+            timer = setTimeout(() => {
+                setDisplayedText((prev) => prev.slice(0, -1));
+                if (displayedText === '') {
+                    setIsDeleting(false);
+                    setQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
+                    setIndex(0);
+                }
+            }, 35);
+        } else {
+            timer = setTimeout(() => {
+                setDisplayedText(quote.slice(0, displayedText.length + 1));
+                if (displayedText === quote) {
+                    setIsDeleting(true);
+                }
+            }, 50);
+        }
+        return () => clearTimeout(timer);
+    }, [displayedText, isDeleting, quoteIndex]);
+
+    // Blinking cursor effect
+    useEffect(() => {
+        const blinkInterval = setInterval(() => setBlink((prev) => !prev), 500);
+        return () => clearInterval(blinkInterval);
+    }, []);
+
+    return (
+        <div className="quote-container" style={{ paddingTop: '25px' }}>
+            <Text style={{ fontSize: '20px', color: 'black', fontWeight: '200',fontStyle:'italic',backgroundColor:'rgba(171, 222, 4,0.3)' }}>
+                 - {displayedText}
+                <span style={{ opacity: blink ? 1 : 0 }}>|</span>
+            </Text>
+        </div>
+    );
 };
 
-const QuoteGrid = () => {
-  const [quotes, setQuotes] = useState(getRandomQuotes(allQuotes, 4));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setQuotes(getRandomQuotes(allQuotes, 4));
-    }, 10000);
-
-    // Cleanup interval when the component is unmounted
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div style={{ textAlign: 'center', padding: '20px', width:'95vw' }}>
-      <h2 style={{ marginBottom: '20px', color: '#333' }}>Inspirational Quotes</h2>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Row gutter={[24, 24]} style={{ maxWidth: '900px', width: '100%' }}>
-          {quotes.map((quote, index) => (
-            <Col key={index} xs={24} sm={12} md={6} lg={12}>
-              <Card
-                hoverable
-                style={{
-                  width: '100%',
-                  height: '150px',
-                  border: '3px solid #abde04',
-                  borderRadius: '100px',
-                  boxShadow: '0 4px 8px rgba(171, 222, 4, 0.2)',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                  backgroundColor: 'white',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 5px 10px rgba(171, 222, 4, 0.5)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(171, 222, 4, 0.2)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >
-                <Card.Meta
-                  title={<div style={{ color: '#abde04', fontSize:'large' }}>{quote.person}</div>}
-                  description={<div style={{ fontSize:'larger', fontStyle: 'italic', fontWeight:'bold', color: '#333' }}>"{quote.quote}"</div>}
-                />
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </div>
-    </div>
-  );
-};
-
-export default QuoteGrid;
+export default Quotes;

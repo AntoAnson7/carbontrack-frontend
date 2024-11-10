@@ -14,13 +14,12 @@ const NewsCarousel = () => {
         const response = await axios.get('https://newsapi.org/v2/everything', {
           params: {
             q: 'Carbon Footprint OR Climate Change & Global Warming OR Environment OR Sustainability Practices',
-            apiKey: '4c06d98b8110491e9d0a651befb46430', // Replace with your API key
+            apiKey: '4c06d98b8110491e9d0a651befb46430',
             language: 'en',
             sortBy: 'relevancy',
           },
         });
 
-        // Filter out articles without images, title, or description
         const filteredArticles = response.data.articles.filter(
           (article) => article.urlToImage && article.title && article.description
         );
@@ -37,7 +36,6 @@ const NewsCarousel = () => {
   }, []);
 
   useEffect(() => {
-    // Update currentIndex every 5 seconds
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 8) % articles.length);
     }, 10000);

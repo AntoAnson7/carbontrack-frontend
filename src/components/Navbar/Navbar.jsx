@@ -8,9 +8,6 @@ import './Navbar.css'
 const Navbar = () => {
   const navigate = useNavigate();
 
-  // const handleLoginSignup = () => {
-  //   navigate('/login');
-  // };
 
   const [isSticky, setIsSticky] = useState(false);
 
@@ -38,9 +35,20 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-links">
-        <Link to="/login">Login</Link>
-        <Link to="/register">Signup</Link>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/login" style={{borderRadius:'5px'}}>Login</Link>
+        {!localStorage.getItem('token')?
+          <Link to="/register" classname='get-started' style={{
+          border:'1px solid black',
+          borderRadius:'5px',
+        }}>
+          Get Started
+          </Link>
+
+
+        :<Link to="/dashboard" style={{
+          border:'1px solid black',
+          borderRadius:'5px',
+        }}>Dashboard</Link>}
       </div>
     </div>
   );

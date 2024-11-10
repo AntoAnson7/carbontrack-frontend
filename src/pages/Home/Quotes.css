@@ -1,0 +1,18 @@
+.cursor {
+    font-weight: bold;
+    font-size: 24px;
+    color: #ABDE04;
+}
+.quote-container {
+    font-family: 'Courier New', Courier, monospace;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

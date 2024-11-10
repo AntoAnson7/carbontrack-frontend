@@ -1,24 +1,64 @@
-import React from 'react';
-import NewsGrid from './NewsGrid';
-import QuoteGrid from './QuoteGrid';
-import TipGrid from './TipGrid';
-import Header from './Header';
-import Navbar from '../../components/Navbar/Navbar';
-import './styles.css' 
+import React from 'react'
+import Navbar from '../../components/Navbar/Navbar'
+import dashpic from './dash.png'
+import Quotes from './QuoteGrid'
+import NewsGrid from './NewsGrid'
+import './Home.css'
 
-const Home = () => {
-
+function HomeNew() {
   return (
-    <div className="home-page1">
-      <Navbar/>
-      <Header/>
-      <div id='content'>
-      <TipGrid/>
-      <QuoteGrid/>
-      <NewsGrid/>
-      </div>
-    </div>
-  );
-};
+    <div className='home'>
+        <Navbar/>
 
-export default Home;
+        <div className="home-pg1">
+            <div className="pg1-left">
+                <div className='main-headings-p'>
+                    <p>Track, Offset and <span>Reduce</span> Your</p>
+                    <p>Carbon <span>Footprint</span> with <span>Carbon Track</span></p>
+                </div>
+
+                <p style={{
+                    fontSize:'12px',
+                    fontWeight:'200'
+                }}>
+                    Carbon Track is your personal guide to understanding and managing your carbon footprint. 
+                    By tracking daily activities across categories like transportation, energy, and waste, 
+                    Carbon Track helps you see your impact, set realistic reduction goals, and 
+                    offset emissions through eco-friendly actions. Monitor your progress, earn rewards, 
+                    and join a community dedicated to making sustainable choices every day. Let’s reduce 
+                    our carbon footprint together, one step at a time.</p>
+
+                <div className='home-pg1-buttons'>
+                    <button className='b1'>Get Started</button>
+                    <button className='b2'>Learn More</button>
+                </div>
+                <div>
+                    <Quotes/>
+                </div>
+            </div>
+
+            <div className="pg1-right">
+                <img src={dashpic} alt="" className='dash-pic'/>
+            </div>
+            <div style={{
+            width: '100vw',
+            height: '100px',  
+            background: 'linear-gradient(to bottom, white, rgba(171, 222, 4,0.5))',//94d96f
+            position:'absolute',
+            bottom:'0'
+        }}></div>
+        </div>
+
+        <div style={{
+            width: '100vw',
+            height: '100px',  
+            marginTop:'55px',
+            background: 'linear-gradient(to top, white, rgba(171, 222, 4,0.5))',//94d96f
+        }}></div>
+
+        <NewsGrid/>
+    </div>
+  )
+}
+
+export default HomeNew
