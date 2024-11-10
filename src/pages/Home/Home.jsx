@@ -3,7 +3,7 @@ import NewsGrid from './NewsGrid';
 import QuoteGrid from './QuoteGrid';
 import TipGrid from './TipGrid';
 import Header from './Header';
-import Navbar from './Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import './styles.css' 
 
 const Home = () => {

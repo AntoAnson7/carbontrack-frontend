@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Statistic, Typography } from 'antd';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Progress, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
 import NoDataTakeSurvey from '../../components/Errors/NoDataTakeSurvey';
+import { Spin } from 'antd';
 import './Dashboard.css'
+import axios from 'axios';
+import DashPG1 from './DashPG1'
+import ChatBot from '../../components/ChatBot/ChatBot'
 
 const { Text } = Typography;
 
@@ -13,11 +17,31 @@ const Dashboard = () => {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     const profile = useSelector((state) => state.profile.profile);
     const profileAvailable = useSelector((state) => state.profile.available);
+    const [enrolledIn,setEnrolledIn] = useState([])
+    const [loading,setLoading] = useState(true)
+    const [giftCards,setGiftcards]=useState([])
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!localStorage.getItem('token')) {
             navigate('/unauthorized');
         }
+        localStorage.getItem('claimed_rewards')&&setGiftcards(JSON.parse(localStorage.getItem('claimed_rewards')))
+
+        const fetchProjects=async()=>{
+            try{
+                const res = await axios.get("http://127.0.0.1:8000/api/enroll/",{ headers: {Authorization: `Bearer ${localStorage.getItem('token')}`,},});
+                setEnrolledIn(res.data.projects)
+                console.log(enrolledIn)
+            }
+            catch(err){
+                console.log(err)
+            }finally{
+                setLoading(false)
+            }
+
+        }
+
+        localStorage.getItem('token')&&fetchProjects()
     }, [isLoggedIn, navigate]);
 
     const nationalAverages = {
@@ -43,94 +67,26 @@ const Dashboard = () => {
     ];
 
     const getComparisonText = (value, average) => {
-        if (value < average) return 'Below national average. Great job!';
+        if (value < average) return 'Below national average. Great job! Keeup Up the good work and contribute to the nature!';
         return 'Above national average. Consider taking steps to reduce emissions.';
     };
+    if (loading) {
+        return <Spin tip="Loading..." />;
+      }
 
     return (
-        <div className="dashboard" style={{ padding: '20px', paddingLeft: 260 }}>
+        <div className="dashboard" style={{ padding: '20px', paddingLeft: 286,paddingRight:30 }}>
             {profileAvailable ? (
                 <div className="profile-available">
-                    <div className="dash-pg-1">
-                        <div className="dash-header" style={{padding:'10px',paddingLeft:'15px'}}>
-                            <h1 style={{color:'#ABDE04'}}>Dashboard</h1>
-                            <hr />
-                        </div>
-                            <div className="daily-yearly">
-                                <Col span={10}>
-                                    <Card title={`${data[0].category} Footprint`} bordered>
-                                        <Statistic
-                                            title="Emissions (kg CO₂)"
-                                            value={data[0].value}
-                                            precision={2}
-                                        />
-                                        <ResponsiveContainer width="100%" height={200}>
-                                            <BarChart data={[{ name: data[0].category, user: data[0].value, average: data[0].average }]}>
-                                                <XAxis dataKey="name" />
-                                                <YAxis />
-                                                <Tooltip />
-                                                <Legend />
-                                                <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
-                                                <Bar dataKey="average" fill="#82ca9d" name="National Average" />
-                                            </BarChart>
-                                        </ResponsiveContainer>
-                                        <Text type={data[0].value < data[0].average ? 'success' : 'warning'}>
-                                            {getComparisonText(data[0].value, data[0].average)}
-                                        </Text>
-                                    </Card>
-                                </Col>
-                                <Col span={10}>
-                                    <Card title={`Projected ${data[1].category} Footprint`} bordered>
-                                        <Statistic
-                                            title="Emissions (kg CO₂)"
-                                            value={data[1].value}
-                                            precision={2}
-                                        />
-                                        <ResponsiveContainer width="100%" height={200}>
-                                            <BarChart data={[{ name: data[1].category, user: data[1].value, average: data[1].average }]}>
-                                                <XAxis dataKey="name" />
-                                                <YAxis />
-                                                <Tooltip />
-                                                <Legend />
-                                                <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
-                                                <Bar dataKey="average" fill="#82ca9d" name="National Average" />
-                                            </BarChart>
-                                        </ResponsiveContainer>
-                                        <Text type={data[1].value < data[1].average ? 'success' : 'warning'}>
-                                            {getComparisonText(data[1].value, data[1].average)}
-                                        </Text>
-                                    </Card>
-                                </Col>
-                            </div>
+                    <div className="dash-header" style={{marginLeft:'15px'}}>
+                        <h1 style={{ color: '#ABDE04' }}>Dashboard</h1>
+                        <hr style={{opacity:'10%'}}/>
                     </div>
-                    <Row gutter={[16, 16]}>
-                        {data.slice(2).map((item, index) => (
-                            <Col span={12} key={index}>
-                                <h1 style={{fontSize:'30px',color:'#abde04'}}>{item.category} Emmissions</h1>
-                                <hr />
-                                <Card title={`${item.category} Emissions`} bordered>
-                                    <Statistic
-                                        title="Emissions (kg CO₂)"
-                                        value={item.value}
-                                        precision={2}
-                                    />
-                                    <ResponsiveContainer width="100%" height={200}>
-                                        <BarChart data={[{ name: item.category, user: item.value, average: item.average }]}>
-                                            <XAxis dataKey="name" />
-                                            <YAxis />
-                                            <Tooltip />
-                                            <Legend />
-                                            <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
-                                            <Bar dataKey="average" fill="#82ca9d" name="National Average" />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                    <Text type={item.value < item.average ? 'success' : 'warning'}>
-                                        {getComparisonText(item.value, item.average)}
-                                    </Text>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
+
+                    <DashPG1 enrolledIn={enrolledIn} giftCards={giftCards} data={data} getComparisonText={getComparisonText}/>
+                    <div style={{width:'100%'}}>
+                        <ChatBot/>
+                    </div>
                 </div>
             ) : (
                 <NoDataTakeSurvey />
@@ -140,3 +96,52 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
+
+
+
+{/* <Row gutter={[16, 16]}>
+    {data.slice(2).map((item, index) => (
+        <Col span={12} key={index}>
+            <h1 style={{fontSize:'30px',color:'#abde04'}}>{item.category} Emmissions</h1>
+            <hr />
+            <Card title={`${item.category} Emissions`} bordered>
+                <Statistic
+                    title="Emissions (kg CO₂)"
+                    value={item.value}
+                    precision={2}
+                />
+                <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={[{ name: item.category, user: item.value, average: item.average }]}>
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="user" fill="#8884d8" name="Your Emissions" />
+                        <Bar dataKey="average" fill="#82ca9d" name="National Average" />
+                    </BarChart>
+                </ResponsiveContainer>
+                <Text type={item.value < item.average ? 'success' : 'warning'}>
+                    {getComparisonText(item.value, item.average)}
+                </Text>
+            </Card>
+        </Col>
+    ))}
+</Row> */}
+
+
+
+
+
+
+
+
+
+
+
+

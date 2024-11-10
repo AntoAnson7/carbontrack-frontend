@@ -59,7 +59,7 @@ const Transportation = ({submit}) => {
                     onChange={(value) => setDailyCommute(value)}
                     placeholder="Select Commute Type"
                   >
-                    <Option value="CAR">Car</Option>
+                    <Option value="CAR">Car / Motorbike</Option>
                     <Option value="PUBLIC_TRANSPORT">Public Transport</Option>
                     <Option value="BICYCLE">Bicycle</Option>
                     <Option value="WALKING">Walking</Option>

@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../Redux/userSlice';
 import { setProfile } from '../../Redux/profileSlice';
 import LoginForm from './LoginForm';
-import './Login_Signup.css';
+import './Auth.css';
+import mainbg from './bgtest1.jpg'
 
 const Login = () => {
   const navigate = useNavigate(); 
@@ -30,7 +31,7 @@ const Login = () => {
       localStorage.setItem('token', res.data.access); 
       dispatch(setUser(res.data.user));
       message.success('Login Successful!');
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       if (err.response) {
         message.error(err.response.data.msg || 'Login failed. Please try again.');
@@ -43,17 +44,14 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="auth-left">
-        <img 
-          src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Flogin.png?alt=media&token=904943fd-77b2-42fa-bf3d-a55ec1ad1f1e" 
-          alt="" 
-          style={{ width: '400px' }}
-        />
+
+        <img src={mainbg} style={{width:'100%',minHeight:'100vh'}} />
       </div>
-      
+      <div className="gradient-box"></div>
+
+
       <div className="auth-right">
-        <div className='auth-form'>
           <LoginForm onSubmit={handleSubmit} />
-        </div>
       </div>
     </div>
   );

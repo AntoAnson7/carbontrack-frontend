@@ -1,0 +1,255 @@
+
+<Row gutter={[16, 16]}>
+        <h1>Tweak emmission by category</h1>
+        {chartData.map((item) => (
+          <Col xs={24} sm={12} md={8} lg={8} key={item.category}>
+            <Card
+              title={item.category}
+              bordered
+              hoverable
+              onClick={() => openModal(item.category)}
+              style={{ cursor: 'pointer' }}
+            >
+              <Statistic
+                value={item.value.toFixed(2)}
+                precision={2}
+                suffix="kg CO₂"
+              />
+              <ResponsiveContainer width="100%" height={100}>
+                <BarChart
+                  data={[
+                    { name: item.category, Emission: item.value, NationalAverage: item.average }
+                  ]}
+                >
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  {/* <Legend /> */}
+                  <Bar dataKey="Emission" fill="#8884d8" />
+                  <Bar dataKey="NationalAverage" fill="#82ca9d" />
+                </BarChart>
+              </ResponsiveContainer>
+              <Text>{item.value < item.average ? <p style={{color:'green'}}>Below National Average &#128513;&#128293;</p> : 
+              <p style={{color:'red'}}>
+                Above National Average &#128532;♨️;
+              </p>}
+              </Text>
+              </Card>
+        </Col>
+        ))}
+      </Row>
+
+      <Modal
+        title={`Adjust ${selectedCategory}`}
+        visible={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        {selectedCategory && (
+          <Form layout="vertical">
+            {/* Transportation Form */}
+            {selectedCategory === "Transportation" && (
+              <>
+                <Form.Item label="Daily Commute">
+                  <Select
+                    value={formData.transportation.daily_commute}
+                    onChange={(value) => handleFieldChange("transportation", "daily_commute", value)}
+                  >
+                    <Select.Option value="CAR">Car</Select.Option>
+                    <Select.Option value="PUBLIC_TRANSPORT">Public Transport</Select.Option>
+                    <Select.Option value="BICYCLE">Bicycle</Select.Option>
+                    <Select.Option value="WALKING">Walking</Select.Option>
+                    <Select.Option value="CARPOOL">Carpool</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Commute Distance (km)">
+                  <InputNumber
+                    min={0}
+                    value={formData.transportation.commute_distance}
+                    onChange={(value) => handleFieldChange("transportation", "commute_distance", value)}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+                <Form.Item label="Fuel Type">
+                  <Select
+                    value={formData.transportation.fuel_type}
+                    onChange={(value) => handleFieldChange("transportation", "fuel_type", value)}
+                  >
+                    <Select.Option value="PETROL">Petrol</Select.Option>
+                    <Select.Option value="DIESEL">Diesel</Select.Option>
+                    <Select.Option value="ELECTRIC">Electric</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Air Travel (km per year)">
+                  <InputNumber
+                    min={0}
+                    value={formData.transportation.air_travel}
+                    onChange={(value) => handleFieldChange("transportation", "air_travel", value)}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </>
+            )}
+
+            {/* Home Energy Form */}
+            {selectedCategory === "Home Energy" && (
+              <>
+                <Form.Item label="Energy Source">
+                  <Select
+                    value={formData.homeEnergy.energy_source}
+                    onChange={(value) => handleFieldChange("homeEnergy", "energy_source", value)}
+                  >
+                    <Select.Option value="GRID">Grid</Select.Option>
+                    <Select.Option value="SOLAR">Solar</Select.Option>
+                    <Select.Option value="NATURAL_GAS">Natural Gas</Select.Option>
+                    <Select.Option value="OTHER">Other</Select.Option>
+                    <Select.Option value="HYDROELECTRIC">Hydroelectric</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Monthly Consumption (kWh)">
+                  <InputNumber
+                    min={0}
+                    value={formData.homeEnergy.monthly_consumption}
+                    onChange={(value) => handleFieldChange("homeEnergy", "monthly_consumption", value)}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </>
+            )}
+
+            {/* Food and Diet Form */}
+            {selectedCategory === "Food and Diet" && (
+              <>
+                <Form.Item label="Diet Type">
+                  <Select
+                    value={formData.foodDiet.diet_type}
+                    onChange={(value) => handleFieldChange("foodDiet", "diet_type", value)}
+                  >
+                    <Select.Option value="VEGAN">Vegan</Select.Option>
+                    <Select.Option value="VEGETARIAN">Vegetarian</Select.Option>
+                    <Select.Option value="PESCATARIAN">Pescatarian</Select.Option>
+                    <Select.Option value="OMNIVORE">Omnivore</Select.Option>
+                    <Select.Option value="MEAT_HEAVY">Meat-Heavy</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Food Source">
+                  <Select
+                    value={formData.foodDiet.food_source}
+                    onChange={(value) => handleFieldChange("foodDiet", "food_source", value)}
+                  >
+                    <Select.Option value="ALWAYS">Always</Select.Option>
+                    <Select.Option value="OFTEN">Often</Select.Option>
+                    <Select.Option value="SOMETIMES">Sometimes</Select.Option>
+                    <Select.Option value="RARELY">Rarely</Select.Option>
+                    <Select.Option value="NEVER">Never</Select.Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+
+            {/* Shopping and Goods Form */}
+            {selectedCategory === "Shopping and Goods" && (
+              <>
+                <Form.Item label="Clothing Purchase Frequency">
+                  <Select
+                    value={formData.shoppingGoods.clothing_purchase}
+                    onChange={(value) => handleFieldChange("shoppingGoods", "clothing_purchase", value)}
+                  >
+                    <Select.Option value="WEEKLY">Weekly</Select.Option>
+                    <Select.Option value="MONTHLY">Monthly</Select.Option>
+                    <Select.Option value="QUARTERLY">Quarterly</Select.Option>
+                    <Select.Option value="YEARLY">Yearly</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="General Purchases Frequency">
+                  <Select
+                    value={formData.shoppingGoods.general_purchases}
+                    onChange={(value) => handleFieldChange("shoppingGoods", "general_purchases", value)}
+                  >
+                    <Select.Option value="WEEKLY">Weekly</Select.Option>
+                    <Select.Option value="MONTHLY">Monthly</Select.Option>
+                    <Select.Option value="QUARTERLY">Quarterly</Select.Option>
+                    <Select.Option value="YEARLY">Yearly</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Recycling Habits">
+                  <Select
+                    value={formData.shoppingGoods.recycling}
+                    onChange={(value) => handleFieldChange("shoppingGoods", "recycling", value)}
+                  >
+                    <Select.Option value="MOST">Most</Select.Option>
+                    <Select.Option value="ABOUT_HALF">About Half</Select.Option>
+                    <Select.Option value="SOME">Some</Select.Option>
+                    <Select.Option value="NONE">None</Select.Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+
+            {/* Waste Management Form */}
+            {selectedCategory === "Waste Management" && (
+              <>
+                <Form.Item label="Waste Disposal Frequency">
+                  <Select
+                    value={formData.wasteManagement.waste_disposal}
+                    onChange={(value) => handleFieldChange("wasteManagement", "waste_disposal", value)}
+                  >
+                    <Select.Option value="DAILY">Daily</Select.Option>
+                    <Select.Option value="EVERY_FEW">Every Few Days</Select.Option>
+                    <Select.Option value="WEEKLY">Weekly</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Composting">
+                  <Select
+                    value={formData.wasteManagement.composting}
+                    onChange={(value) => handleFieldChange("wasteManagement", "composting", value)}
+                  >
+                    <Select.Option value="YES">Yes</Select.Option>
+                    <Select.Option value="NO">No</Select.Option>
+                    <Select.Option value="PLANNING_TO">Planning To</Select.Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+
+            {/* Lifestyle and Habits Form */}
+            {selectedCategory === "Lifestyle and Habits" && (
+              <>
+                <Form.Item label="Energy Saving Habits">
+                  <Select
+                    value={formData.lifestyleHabits.energy_saving}
+                    onChange={(value) => handleFieldChange("lifestyleHabits", "energy_saving", value)}
+                  >
+                    <Select.Option value="ALWAYS">Always</Select.Option>
+                    <Select.Option value="OFTEN">Often</Select.Option>
+                    <Select.Option value="SOMETIMES">Sometimes</Select.Option>
+                    <Select.Option value="RARELY">Rarely</Select.Option>
+                    <Select.Option value="NEVER">Never</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Water Usage Habits">
+                  <Select
+                    value={formData.lifestyleHabits.water_usage}
+                    onChange={(value) => handleFieldChange("lifestyleHabits", "water_usage", value)}
+                  >
+                    <Select.Option value="CONSCIOUS">Conscious</Select.Option>
+                    <Select.Option value="SOMETIMES">Sometimes</Select.Option>
+                    <Select.Option value="RARELY">Rarely</Select.Option>
+                    <Select.Option value="NEVER">Never</Select.Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+          </Form>
+        )}
+        {/* Comparison Message */}
+        {selectedCategory && (
+          <div style={{ marginTop: '20px' }}>
+            <Text strong>
+              {emissionData[selectedCategory.replace(/\s/g, '')] < nationalAverages[selectedCategory.replace(/\s/g, '').toLowerCase()]
+                ? "Great job! You're below the national average."
+                : "Above national average. Consider taking steps to reduce emissions."}
+            </Text>
+          </div>
+        )}
+      </Modal>

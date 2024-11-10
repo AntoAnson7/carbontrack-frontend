@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import UserIcon from './UserIcon';
-import './Sidebar.css'
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
 import { clearUser } from '../../Redux/userSlice';
 import { clearProfile } from '../../Redux/profileSlice';
+import logo from '../Navbar/logo.png'
+import { AppstoreOutlined,LockOutlined,SignatureOutlined,LoginOutlined,TrophyOutlined,RadarChartOutlined, SettingOutlined,HomeOutlined,ProfileOutlined,CodeSandboxOutlined } from '@ant-design/icons';
+import './Sidebar.css'
+
 
 
 const items = [
   {
     key: '1',
-    icon: <MailOutlined />,
+    icon: <HomeOutlined />,
     label: <Link to='/'>Home</Link>,
   },
   {
@@ -25,38 +24,42 @@ const items = [
   },
   {
     key: '3',
-    icon: <SettingOutlined />,
+    icon: <ProfileOutlined />,
     label:<Link to='/profile'>Profile</Link>,
   },
 
   {
     key: '4',
-    icon: <SettingOutlined />,
-    label: <Link to='/login'>Login</Link>,
+    icon: <CodeSandboxOutlined />,
+    label: <Link to='/sandbox'>Sandbox</Link>,
   },
 
   {
     key: '5',
-    icon: <SettingOutlined />,
-    label: <Link to='/register'>Register</Link>,
+    icon: <RadarChartOutlined />,
+    label: <Link to='/offset'>Offset Programs</Link>,
   },
 
   {
     key: '6',
     icon: <SettingOutlined />,
-    label: <Link to='/sandbox'>Sandbox</Link>,
+    label: <Link to='/goals'>Set Goals</Link>,
   },
 
   {
     key: '7',
-    icon: <SettingOutlined />,
-    label: <Link to='/offset'>Offset Programs</Link>,
+    icon: <TrophyOutlined />,
+    label: <Link to='/rewards'>Rewards</Link>,
   },
 
   {
     key: '8',
-    icon: <SettingOutlined />,
-    label: <Link to='/goals'>Set Goals</Link>,
+    icon: <LockOutlined />,
+    label: 'Authenticate',
+    children: [
+      { key: '81',icon:<LoginOutlined />, label: <Link to='/login'>Login</Link>},
+      { key: '82',icon:<SignatureOutlined />, label: <Link to='/register'>Register</Link>},
+    ],
   },
 ];
 
@@ -88,6 +91,8 @@ const Sidebar = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('temp_access');
     localStorage.removeItem('token');
+    localStorage.removeItem('claimed_rewards')
+    localStorage.removeItem('suggestions')
     dispatch(clearUser());
     dispatch(clearProfile());
     navigate('/');
@@ -111,27 +116,29 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='sidebar-main' style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      height: '100vh',
-      width: 256,
-      position: 'fixed',
-      padding: '10px',
-      backgroundColor:'white',
-      boxShadow: '4px 0px 10px rgba(0,0,0,0.06)',
-    }}>
+    <div 
+      className='sidebar-main' style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        width: 256,
+        position: 'fixed',
+        padding: '10px',
+        backgroundColor:'white',
+        boxShadow: '4px 0px 10px rgba(0,0,0,0.06)',
+      }}>
 
-      <div style={{ marginBottom: '20px'}}>
+      <div style={{display:'flex',alignItems:'center',marginBottom:'100px'}}>
+        <img src={logo} style={{maxWidth:'75px'}}/>
         <p style={{ 
             fontWeight: 'bold', 
-            fontSize: '23px', 
-            paddingLeft:'25px',
-            paddingTop:'10px'
+            fontSize: '20px', 
+            paddingTop:'10px',
+            margin:0,
+            marginBottom:'8px'
         }}
         >
-            CARBON<span style={{color:'#abde04',fontStyle:'italic'}}>TRACK</span>
+            CARBON<span style={{color:'#abde04'}}>TRACK</span>
             </p>
       </div>
 
@@ -143,27 +150,7 @@ const Sidebar = () => {
         items={items}
       />
 
-      {user&&<div style={{ marginTop: '20px' }} className='sidebar-profile'>
-        <div className="logged-in">
-          <UserIcon username={user?.username}/>
-          <div className="sidebar-profile-right">
-                <p style={{margin:0,opacity:'70%'}}>@{user.username}</p>
-          </div>
-          <FontAwesomeIcon icon={faSignOutAlt} className='log-logout'onClick={HandleLogout}/>
-        </div>
-      </div>}
-
-      {!user&&
-      <div style={{ marginTop: '20px' }} className='sidebar-profile'>
-                <div className="logged-in">
-          <UserIcon username={'?'}/>
-          <div className="sidebar-profile-right">
-                <p style={{margin:0,opacity:'70%'}}>Log in</p>
-          </div>
-          <FontAwesomeIcon icon={faSignOutAlt} className='log-logout'onClick={()=>navigate('/login')}/>
-        </div>
-      </div>}
-
+      {localStorage.getItem('token')&&<button className='sidebar-logout-button' onClick={HandleLogout}>Logout</button>}
     </div>
   );
 };

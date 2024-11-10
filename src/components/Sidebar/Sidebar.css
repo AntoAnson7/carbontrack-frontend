@@ -21,7 +21,7 @@
   
   .sidebar-profile{
       height: 15%;
-      padding: 10px;
+      padding: 2px;
   }
 
   .sidebar-profile-right{
@@ -40,10 +40,12 @@
     background-color: #F5F5F5;
     padding: 8px;
     display: flex;
-    gap: 10px;
     align-items: center;
+    justify-content: center;
     border-radius: 4px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 5px;
+    justify-content: space-between;
   }
 
   .log-logout{
@@ -55,3 +57,29 @@
     cursor: pointer;
     transform: scale(1.02);
   }
+
+  .sidebar-logout-button{
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    margin-left: 20px;
+    border:none ;
+    outline: none;
+    background-color: #abde04;
+    width: 120px;
+    height: 35px;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.2s ease-in;
+    border: 1px solid #abde04;
+  }
+
+  .sidebar-logout-button:hover{
+    background-color: #fff;
+    color: black;
+  }
+
+  .sidebar-main a{
+    text-decoration: none;
+  }
+

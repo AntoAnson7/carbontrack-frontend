@@ -1,16 +1,16 @@
-// Navbar.jsx
-import React, {useEffect, useState} from 'react';
 
+import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './styles.css';
-import logo from './logo.png';  // Path to your logo image
+import logo from './logo.png';  
+import './Navbar.css'
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const handleLoginSignup = () => {
-    navigate('/login');
-  };
+  // const handleLoginSignup = () => {
+  //   navigate('/login');
+  // };
 
   const [isSticky, setIsSticky] = useState(false);
 
@@ -29,16 +29,18 @@ const Navbar = () => {
   return (
     <div className={`navbar ${isSticky ? 'sticky' : ''}`}>
       <div className="brand">
-        <span style={{ color: 'black' }}>Carbon</span>
-        <span style={{ color: '#abde04' }}>Track</span>
+        <span style={{ color: 'black' }}>CARBON</span>
+        <span style={{ color: '#abde04' }}>TRACK</span>
       </div>
       
       <div className="logo">
         <img src={logo} alt="Logo" />
       </div>
 
-      <div className="nav-button">
-        <button  onClick={handleLoginSignup}>Login / Signup</button>
+      <div className="navbar-links">
+        <Link to="/login">Login</Link>
+        <Link to="/register">Signup</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </div>
     </div>
   );

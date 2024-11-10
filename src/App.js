@@ -1,4 +1,4 @@
-import {BrowserRouter as Router,Routes,Route,Navigate,useLocation} from 'react-router-dom'
+import {BrowserRouter as Router,Routes,Route,Navigate,useLocation,useNavigate} from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup';
@@ -9,21 +9,31 @@ import { useDispatch } from 'react-redux';
 import { fetchUser } from './Redux/userSlice';
 import { fetchProfile } from './Redux/profileSlice';
 import { useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import PageUnavailable from './components/Errors/PageUnavailable'
 import Sandbox from './pages/Sandbox/Sandbox';
 import Offset from './pages/Offset/Offset';
 import Goals from './pages/Goals/Goals';
+import Rewards from './pages/Rewards/Rewards';
 import NotificationManager from './components/Notification/NotificationManager';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { message } from 'antd';
 
 
 function App() {
   const location = useLocation()
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const hideSidebarIn = ['/','/login','/register']
   const hideSidebar = hideSidebarIn.includes(location.pathname)
+
+  useEffect(()=>{
+    if(localStorage.getItem('temp_access') && location.pathname!='/questionaire'){
+      navigate('/questionaire')
+      message.info("Complete the questionaire before you can access other features!")
+    }
+  },[location])
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,6 +55,7 @@ function App() {
           <Route path="/sandbox" element={<Sandbox/>}/>
           <Route path="/offset" element={<Offset/>}/>
           <Route path="/goals" element={<Goals/>}/>
+          <Route path="/rewards" element={<Rewards/>}/>
 
           {/* Errors */}
           <Route path="/unauthorized" element={<Unauthorized/>}/>

@@ -1,21 +1,24 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form } from 'antd';
+import { Button, Checkbox, Form, Input, Flex } from 'antd';
 import { Link } from 'react-router-dom';
-
-const LoginForm = ({ onSubmit }) => {
+const App = ({onSubmit}) => {
+  const onFinish = (values) => {
+    onSubmit(values)
+  };
   return (
     <Form
+      className="login-componenent"
       name="login"
       initialValues={{
         remember: true,
       }}
       style={{
-        maxWidth: 460,
+        minWidth: '60%',
       }}
-      onFinish={onSubmit}  
+      onFinish={onFinish}
     >
-      <h1>Login</h1>
+      <h1 style={{marginBottom:'50px'}}>Login</h1>
       <Form.Item
         name="username"
         rules={[
@@ -25,25 +28,8 @@ const LoginForm = ({ onSubmit }) => {
           },
         ]}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <UserOutlined style={{ marginRight: '8px',marginBottom:'15px' }} />
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            style={{
-              width: '100%',
-              height:'50px',
-              padding: '8px',
-              border: '1px solid #d9d9d9',
-              borderRadius: '4px',
-              outline:'none',
-              // border:'2px solid #abde04',
-            }}
-          />
-        </div>
+        <Input prefix={<UserOutlined />} placeholder="Username" />
       </Form.Item>
-
       <Form.Item
         name="password"
         rules={[
@@ -53,43 +39,27 @@ const LoginForm = ({ onSubmit }) => {
           },
         ]}
       >
-        <div style={{ display: 'flex',alignItems:'center' }}>
-          <LockOutlined style={{ marginRight: '8px',marginBottom:'15px' }} />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            style={{
-              width: '100%',
-              height:'50px',
-              padding: '8px',
-              border: '1px solid #d9d9d9',
-              borderRadius: '4px',
-              outline:'none',
-              // border:'2px solid #abde04',
-            }}
-          />
-        </div>
+        <Input prefix={<LockOutlined />} type="password" placeholder="Password" />
       </Form.Item>
-
       <Form.Item>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Checkbox style={{ display: 'flex', alignItems: 'center',paddingLeft:'22px' }}>Remember me</Checkbox>
-          <p style={{ margin: 0 }}>Forgot password?</p>
+        <Flex justify="space-between" align="center">
+          <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+          <a href="">Forgot password</a>
+        </Flex>
+      </Form.Item>
+
+      <Form.Item style={{display:'flex',flexDirection:'column',gap:'100px'}}>
+        <Button block type="primary" htmlType="submit">
+          Log in
+        </Button>
+
+        <div>
+          <Link to='/register'>Dont have an account yet?</Link>
         </div>
       </Form.Item>
-
-      <Form.Item style={{display:'flex',alignItems:'start'}}>
-        <button type="submit" style={{width:'150px',marginLeft:'23px'}}>
-          Log in
-        </button>
-      </Form.Item>
-
-      <Link to="/register" style={{ textDecoration: 'none', color: 'black'}}>
-        Don't have an account? <span>Sign Up.</span>
-      </Link>
     </Form>
   );
 };
-
-export default LoginForm;
+export default App;

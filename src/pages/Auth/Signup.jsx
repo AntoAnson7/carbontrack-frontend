@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Login_Signup.css' 
+import { Link } from 'react-router-dom';
 import { message,Input } from 'antd'; 
-import {setUser} from '../../Redux/userSlice'
-import { useDispatch } from 'react-redux';
+import mainbg from './bgtest1.jpg'
+import './Auth.css' 
 
 const Signup = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate(); 
     const [formData, setFormData] = useState({
         username: '',
@@ -54,11 +53,13 @@ const Signup = () => {
         <div className="signup-container">
 
             <div className="auth-left">
-            <img src="https://firebasestorage.googleapis.com/v0/b/django-tut-16ef3.appspot.com/o/carbontrack_assets%2Ficon_assets%2Fsignup.png?alt=media&token=5a8434b5-02a2-4d56-b805-d5fc74a48bd4" alt="" style={{width:'500px'}}/>
+                <img src={mainbg} style={{width:'100%',minHeight:'100vh'}} />
             </div>
-            
+
+            <div className="gradient-box"></div>
+
             <div className="auth-right">
-                <form classname='auth-form' onSubmit={handleSubmit}>
+                <form classname='auth-form' onSubmit={handleSubmit} style={{maxWidth:'70%'}}>
                     <h1>Register</h1>
                         <Input
                             type="text"

@@ -3,7 +3,7 @@ import header_img from './header_bg.jpg'
 import { Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 import { UserAddOutlined, BarChartOutlined, RiseOutlined, DownOutlined } from '@ant-design/icons';
-
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const navigate = useNavigate(); // Using useNavigate hook
@@ -30,7 +30,7 @@ const Header = () => {
         // backgroundImage: 'linear-gradient(to top,#abde04, #ffffff)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: 'maxContent',
+        height: '100vh',
         width:'100vw',
         textAlign: 'center',
         display: 'flex',
@@ -64,7 +64,11 @@ const Header = () => {
      
 
       {/* How It Works Cards */}
-      <div style={{ marginTop: '40px'}}>
+      <motion.div style={{ marginTop: '40px'}}
+        initial = {{opacity:0,y:-100}}
+        animate = {{opacity:1,y:0}}
+        transition={{ duration: 0.5 }}
+      >
         <h2 style={{ color: '#333' }}>How It Works</h2>
         <div style={{padding:'10px', display:'grid' }}>
         <Row gutter={[24, 24]} justify="center">
@@ -76,7 +80,6 @@ const Header = () => {
                 textAlign: 'center',
                 padding: '5px',
                 backgroundImage: 'linear-gradient(to top right, #dbff66, #ffffff)',
-                // border:'2px solid #abde04',
                 border:'none',
                 boxShadow: '0 5px 10px rgba(0, 0, 0, 0.5)',
                 transition: 'transform 0.3s',
@@ -147,7 +150,7 @@ const Header = () => {
           </Col>
         </Row>
         </div>
-      </div>
+      </motion.div>
 
        {/* Arrow Down Button */}
        <Button

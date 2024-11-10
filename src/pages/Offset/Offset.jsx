@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Project from './Project';
 import { Row, Col, Input, Select } from 'antd';
 import { motion } from 'framer-motion';
-import './Offset.css'
 import { useNavigate } from 'react-router';
+import './Offset.css'
 
 const { Search } = Input;
 const { Option } = Select;
@@ -13,10 +13,9 @@ function Offset() {
   const navigate = useNavigate()
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const [sortOrder, setSortOrder] = useState(null);
 
   useEffect(()=>{
-    !localStorage.getItem('token')&&navigate()
+    !localStorage.getItem('token')&&navigate()    
   },[])
 
   useEffect(() => {
@@ -38,7 +37,6 @@ function Offset() {
 
   
   const handleSortChange = (value) => {
-    setSortOrder(value);
     const sortedProjects = [...filteredProjects].sort((a, b) => {
       if (value === 'asc') {
         return a.offset_potential_tons - b.offset_potential_tons;

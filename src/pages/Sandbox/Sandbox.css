@@ -1,0 +1,13 @@
+.tweak-cat{
+    display: flex;
+    gap: 90px;
+    padding: 10px;
+    padding-top: 50px;
+}
+
+.tweak-cat-input{
+    flex: 1;
+}
+.tweak-cat-chart{
+    flex: 1;
+}
