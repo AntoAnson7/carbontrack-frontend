@@ -20,7 +20,8 @@
     font-weight: 200;
 }
 .main-headings-p p span{
-    background-color: rgba(171, 222, 4,0.6);
+    background-color: rgba(171, 222, 4,0.5);
+    padding: 0 3px 0 3px;
 }
 
 .pg1-right{

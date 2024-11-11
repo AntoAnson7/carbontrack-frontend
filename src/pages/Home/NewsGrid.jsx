@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const NewsCarousel = () => {
+const NewsGrid = () => {
   const [articles, setArticles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [blink, setBlink] = useState(true);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const response = await axios.get('https://newsapi.org/v2/everything', {
           params: {
-            q: 'Carbon Footprint OR Climate Change & Global Warming OR Environment OR Sustainability Practices',
+            q: 'Carbon Footprint OR Climate Change OR Global Warming OR Environment OR Sustainability',
             apiKey: '4c06d98b8110491e9d0a651befb46430',
             language: 'en',
             sortBy: 'relevancy',
@@ -25,10 +26,8 @@ const NewsCarousel = () => {
         );
 
         setArticles(filteredArticles);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching news:', error);
-        setLoading(false);
       }
     };
 
@@ -37,67 +36,90 @@ const NewsCarousel = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 8) % articles.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % articles.length);
     }, 10000);
 
     return () => clearInterval(interval);
   }, [articles.length]);
 
-  if (loading) {
-    return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 50, color:'#abde04' }} spin />} />
-      </div>
-    );
-  }
+  useEffect(() => {
+    setDisplayedTitle('');
+    setIsDeleting(false);
+  }, [currentIndex]);
 
-  // Get the current batch of 8 articles to display
-  const displayArticles = articles.slice(currentIndex, currentIndex + 6);
+  // Typing effect
+  useEffect(() => {
+    const currentTitle = articles[currentIndex]?.title || '';
+    let timer;
+
+    if (isDeleting) {
+      timer = setTimeout(() => {
+        setDisplayedTitle((prev) => prev.slice(0, -1));
+        if (displayedTitle === '') {
+          setIsDeleting(false);
+        }
+      }, 50);
+    } else {
+      timer = setTimeout(() => {
+        setDisplayedTitle((prev) => currentTitle.slice(0, prev.length + 1));
+        if (displayedTitle === currentTitle) {
+          setIsDeleting(true);
+        }
+      }, 70);
+    }
+
+    return () => clearTimeout(timer);
+  }, [displayedTitle, isDeleting, articles, currentIndex]);
+
+  // Blinking cursor effect
+  useEffect(() => {
+    const blinkInterval = setInterval(() => setBlink((prev) => !prev), 500);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? articles.length - 1 : prevIndex - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % articles.length);
+  };
+
+  const article = articles[currentIndex];
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px', width:'95vw' }}>
-      <h2 style={{ marginBottom: '20px', color: '#333' }}>Related News</h2>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Row gutter={[30, 30]} style={{ maxWidth: '1200px', width: '100%' }}>
-          {displayArticles.map((article, index) => (
-            <Col key={index} xs={24} sm={12} md={6} lg={8}>
-              <Card
-                hoverable
-                style={{
-                  width: '100%',
-                  height: '380px',
-                  overflow: 'hidden',
-                  border: '2px solid #abde04',
-                  boxShadow: '0 4px 8px rgba(171, 222, 4, 0.2)',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                }}
-                cover={
-                  <img
-                    alt="news"
-                    src={article.urlToImage}
-                    style={{ width: '100%', height: '150px', objectFit: 'cover' }}
-                  />
-                }
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 6px 12px rgba(171, 222, 4, 0.5)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(171, 222, 4, 0.2)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >
-                <Card.Meta title={article.title} description={article.description} />
-                <a href={article.url} target="_blank" rel="noopener noreferrer" style={{ color: '#abde04' }}>
-                  Read more
-                </a>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+    <div style={{ display: 'flex', height: '500px', padding: '30px' }}>
+      <div style={{ flex: 1, padding: '30px' }}>
+        <h2 style={{ fontSize: '32px', color: '#333', fontWeight: '400',fontFamily:'Georgia',backgroundColor:'rgba(171, 222, 4,0.3)' }}>
+          {displayedTitle}
+          <span style={{ opacity: blink ? 1 : 0 }}>|</span>
+        </h2>
+        <p style={{ fontSize: '18px', color: '#666', marginTop: '10px' }}>{article?.description}</p>
+        <a href={article?.url} target="_blank" rel="noopener noreferrer" style={{ color: '#abde04', fontSize: '16px' }}>
+          Read more
+        </a>
+        <div style={{ marginTop: '20px' }}>
+          <LeftOutlined onClick={handlePrevious} style={{ cursor: 'pointer', fontSize: '20px', marginRight: '20px' }} />
+          <RightOutlined onClick={handleNext} style={{ cursor: 'pointer', fontSize: '20px' }} />
+        </div>
+      </div>
+      <div style={{ flex: 1, padding: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {article?.urlToImage && (
+          <img
+            src={article.urlToImage}
+            alt="news"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+              objectFit: 'cover',
+              borderRadius: '3px',
+              boxShadow: '3px 3px 10px rgba(0, 0, 0, 0.1)',
+            }}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-export default NewsCarousel;
+export default NewsGrid;

@@ -100,7 +100,7 @@ const Chatbot = () => {
         onClick={() => setIsOpen(true)}
       >
         <Avatar src={carbonbuddy} style={{ marginRight: '10px' }} />
-        <span style={{ color: '#abde04' }}>Carbon Buddy</span>
+        <span style={{ color: '#abde04' }}>CarbonCoach</span>
         {showNotification && (
           <Badge 
             count={1} 

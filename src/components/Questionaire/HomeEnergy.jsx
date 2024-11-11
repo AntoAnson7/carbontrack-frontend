@@ -50,6 +50,7 @@ const HomeEnergy = ({submit}) => {
       <form className="t-form">
         <div className="monthly-consumption">
         <label>What is your current monthly energy consumption? (in kWh)</label>
+        <label style={{fontWeight:'200',fontSize:'12px',opacity:'75%',fontStyle:'italic'}}>(tip : an average indian household uses 50-100 kWh energy)</label>
           <InputNumber min={0} value={monthlyConsumption} onChange={setMonthlyConsumption} placeholder="Monthly Consumption (kWh)" />
         </div>
 
