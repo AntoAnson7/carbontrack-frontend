@@ -63,7 +63,7 @@ function HomeNew() {
             fontSize:'40px',
             fontFamily:'Georgia',
             marginTop:'40px'
-        }}>Related news</h1>
+        }}>Latest Climate Updates</h1>
         <hr style={{width:'60%',marginLeft:'60px',opacity:'15%'}}/>
         <NewsGrid/>
     </div>
